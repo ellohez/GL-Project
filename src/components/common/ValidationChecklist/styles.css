@@ -15,3 +15,11 @@
 .validation-checklist {
   display: flex;
 }
+
+.fa-check {
+  color: rgb(110, 222, 100);
+}
+
+.fa-xmark {
+  color: rgb(225 0 0);
+}
