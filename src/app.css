@@ -10,6 +10,8 @@
   --gray-shadow-rgba: rgba(7, 7, 7, 0.29);
   --orange-shadow-rgba: rgba(244, 95, 26, 0.85);
   --gl-orange: #f45f1a;
+  --error-red: rgb(177, 16, 48);
+  --success-green: rgb(0, 128, 0);
   /* this helps us to use rem units to set relative sizes for other text
   100% for browsers typically defaults to 16px */
   font-size: 100%;
@@ -32,6 +34,8 @@
   /* Same as for light mode */
   --orange-shadow-rgba: rgba(244, 95, 26, 0.85);
   --gl-orange: #f45f1a;
+  --error-red: rgb(255, 69, 0);
+  --success-green: rgb(50, 205, 50);
 }
 
 header {

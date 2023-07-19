@@ -17,9 +17,9 @@
 }
 
 .fa-check {
-  color: rgb(110, 222, 100);
+  color: var(--success-green);
 }
 
 .fa-xmark {
-  color: rgb(225 0 0);
+  color: var(--error-red);
 }
