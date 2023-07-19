@@ -17,6 +17,11 @@ button {
   margin: 0.5em;
   font-size: var(--step--2);
 }
+button[aria-pressed="true"] {
+  transform: translateY(2px);
+  box-shadow: 0 0 0;
+  outline: 0;
+}
 img {
   /* Necessary hack for IE? */
   width: 100%;
