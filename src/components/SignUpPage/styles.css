@@ -73,6 +73,19 @@ button[aria-pressed="true"] {
   box-shadow: 0 0 0;
   outline: 0;
 }
+.checkbox-combo label {
+  padding-left: 0.5em;
+}
+
+div.checkbox-combo {
+  padding-left: 0.5em;
+}
+
+.required {
+  background-color: var(--secondary-color);
+  color: var(--primary-color);
+  margin: 1em;
+}
 /* .success {
   color: #6fb66f;
 }
@@ -82,11 +95,7 @@ button[aria-pressed="true"] {
 }
 
 */
-.required {
-  background-color: var(--secondary-color);
-  color: var(--primary-color);
-  margin: 1em;
-}
+
 /* Hide any elements visibly as well as for aria */
 /* div.feedback-text[aria-hidden="true"] {
   visibility: hidden;
@@ -99,10 +108,3 @@ button[aria-pressed="true"] {
 }
 
 */
-.checkbox-combo label {
-  padding-left: 0.5em;
-}
-
-div.checkbox-combo {
-  padding-left: 0.5em;
-}
