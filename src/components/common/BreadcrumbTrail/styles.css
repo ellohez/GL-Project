@@ -4,9 +4,10 @@ div.breadcrumb-trail {
   /* margin: 0.5em.5em 0.5em; */
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(3em, 7em));
-  background-color: var(--primary-colour);
+  color: var(--secondary-color);
+  background-color: var(--primary-color);
   padding: 0.6em;
-  border: 0.06em solid var(--secondary-colour);
+  border: 0.06em solid var(--secondary-color);
   box-shadow: 0 0.25em 0.625em 0.125em var(--gray-shadow-rgba);
 }
 
@@ -23,6 +24,8 @@ div.divider {
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: var(--primary-color);
+  color: var(--secondary-color);
 }
 
 [aria-current="step"] {

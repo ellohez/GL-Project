@@ -5,8 +5,8 @@
 
 /* define custom properties for our theme colours */
 :root {
-  --primary-colour: white;
-  --secondary-colour: black;
+  --primary-color: white;
+  --secondary-color: black;
   --gray-shadow-rgba: rgba(7, 7, 7, 0.29);
   --orange-shadow-rgba: rgba(244, 95, 26, 0.85);
   --gl-orange: #f45f1a;
@@ -25,22 +25,39 @@
   --step-5: clamp(1.38rem, calc(0.92rem + 2.3vw), 2.7rem);
 }
 
+.dark-mode {
+  --primary-color: black;
+  --secondary-color: white;
+  --gray-shadow-rgba: rgba(52, 36, 22, 0.85);
+  /* Same as for light mode */
+  --orange-shadow-rgba: rgba(244, 95, 26, 0.85);
+  --gl-orange: #f45f1a;
+}
+
+/* body{
+  background-color: var(--primary-color);
+} */
 header {
   margin-bottom: max(3vh, 2rem);
 }
 main {
   /* Background */
-  /* background-color: var(--secondary-colour); */
+  /* background-color: var(--secondary-color); */
   background-image: url("./assets/circult_board_busy.jpeg");
   background-repeat: repeat;
   /* opacity: 0.1; */
   width: 100%;
 }
+body {
+  background-color: var(--primary-color);
+  color: var(--secondary-color);
+}
 /* Div container for page content */
 div.main-container {
   border-radius: 5px;
-  border: 0.1rem dashed var(--secondary-colour);
-  background-color: var(--primary-colour);
+  border: 0.1rem solid var(--secondary-color);
+  background-color: var(--primary-color);
+  box-shadow: 0 0.25em 0.625em 0.125em var(--gray-shadow-rgba);
   /* width will be AT MOST 200rem wide but will be smaller if viewport is smaller */
   width: min(90%, 200rem);
   /* Right and left margin */

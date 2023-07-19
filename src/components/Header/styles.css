@@ -31,7 +31,8 @@ img {
 ul.nav-list {
   padding: 0.5em;
   margin: 0.5em;
-  background-color: var(--secondary-colour);
+  background-color: var(--secondary-color);
+  color: var(--primary-color);
   min-width: 99%;
   border-radius: 20px;
   display: flex;
@@ -53,12 +54,12 @@ than default of right to move the item to the right hand side */
 }
 
 a:link {
-  color: var(--primary-colour);
+  color: var(--primary-color);
 }
 
 /* All links appear as visited already? */
 a:visited {
-  color: var(--primary-colour);
+  color: var(--primary-color);
 }
 
 /* Font awesome user logo */

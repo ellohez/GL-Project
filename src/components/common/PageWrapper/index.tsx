@@ -27,7 +27,6 @@ export default class PageWrapper extends React.Component<
     //   logErrorToMyService(error, errorInfo);
   }
 
-  // TODO: Update this to show some cool 'Oops!' graphic and the error text?
   render() {
     if (this.state.hasError) {
       // You can render any custom fallback UI
