@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 
 import { useAppDispatch } from "../../../store";
 import { setValidTrue } from "../../../store/signUpPages/signUpPagesSlice";
-import "./styles.css";
 
 const GuidancePage = ({ id }: { id: string }): React.JSX.Element => {
   // Currently no user input or validation here,
