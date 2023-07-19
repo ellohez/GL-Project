@@ -68,11 +68,6 @@ input[aria-invalid="false"] {
   border-color: var(--secondary-color);
 }
 
-button[aria-pressed="true"] {
-  transform: translateY(2px);
-  box-shadow: 0 0 0;
-  outline: 0;
-}
 .checkbox-combo label {
   padding-left: 0.5em;
 }
