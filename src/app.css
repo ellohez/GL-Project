@@ -26,7 +26,7 @@
 }
 
 .dark-mode {
-  --primary-color: black;
+  --primary-color: rgb(39, 32, 32);
   --secondary-color: white;
   --gray-shadow-rgba: rgba(52, 36, 22, 0.85);
   /* Same as for light mode */
@@ -34,9 +34,6 @@
   --gl-orange: #f45f1a;
 }
 
-/* body{
-  background-color: var(--primary-color);
-} */
 header {
   margin-bottom: max(3vh, 2rem);
 }
@@ -111,6 +108,9 @@ label {
   padding: 0.2em;
 }
 
+button {
+  box-shadow: 0 4px 10px 2px var(--gray-shadow-rgba);
+}
 button:focus {
   box-shadow: 0 0 1.25em 0 var(--orange-shadow-rgba);
   border: 0.0625px solid var(--gl-orange);
