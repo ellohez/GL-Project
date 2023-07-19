@@ -16,10 +16,11 @@ button {
   padding: 0.5em;
   margin: 0.5em;
   font-size: var(--step--2);
+  box-shadow: 0 4px 10px 2px var(--gray-shadow-rgba);
 }
-button[aria-pressed="true"] {
+.toggle-theme[aria-pressed="true"] {
   transform: translateY(2px);
-  box-shadow: 0 0 0;
+  box-shadow: -2px -2px 2px inset;
   outline: 0;
 }
 img {
