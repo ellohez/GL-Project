@@ -11,8 +11,9 @@ describe("Header", () => {
       expect(screen.getByText("Home")).toBeInTheDocument();
       expect(screen.getByText("Log In")).toBeInTheDocument();
       expect(screen.getByText("Sign Up")).toBeInTheDocument();
+      // SVG does not have 'alt text' so title is used instead
       expect(
-        screen.getByAltText("Global Logic - A Hitachi Group Company")
+        screen.getByTitle("Global Logic - A Hitachi Group Company")
       ).toBeInTheDocument();
     });
   });
