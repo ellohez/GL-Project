@@ -1,21 +1,23 @@
 /* Styles for SignUpPage and child components */
 button {
-  background-color: var(--primary-colour);
+  background-color: var(--primary-color);
+  color: var(--secondary-color);
   border-radius: 3px;
   box-shadow: 0 4px 10px 2px var(--gray-shadow-rgba);
 }
 
 form {
-  background-color: var(--primary-colour);
+  background-color: var(--primary-color);
   padding: 0.2em;
 }
 fieldset {
   padding: 2em;
 }
 h1 {
-  background-color: var(--primary-colour);
+  background-color: var(--primary-color);
   padding: 0.8em;
-  border-bottom: 0.03em solid var(--secondary-colour);
+  border-bottom: 0.03em solid var(--secondary-color);
+  box-shadow: 0 0.25em 0.625em 0.125em var(--gray-shadow-rgba);
 }
 
 h2,
@@ -26,14 +28,14 @@ h4 {
 .help-label {
   display: block;
   width: fit-content;
-  color: var(--secondary-colour);
+  color: var(--secondary-color);
   padding: 0.2em;
   margin: 0.2em 0;
   font-weight: 700;
 }
 
 div.separator {
-  border-top: 0.1rem solid var(--secondary-colour);
+  border-top: 0.1rem solid var(--secondary-color);
   margin: 1rem 0.3rem;
 }
 
@@ -44,7 +46,7 @@ div.separator {
   border-radius: 2px;
   width: 50%;
   transition: width 0.35s ease-in-out;
-  border-color: var(--secondary-colour);
+  border-color: var(--secondary-color);
 }
 
 .block-input:focus {
@@ -63,7 +65,26 @@ input[aria-invalid="true"] {
 }
 
 input[aria-invalid="false"] {
-  border-color: var(--secondary-colour);
+  border-color: var(--secondary-color);
+}
+
+button[aria-pressed="true"] {
+  transform: translateY(2px);
+  box-shadow: 0 0 0;
+  outline: 0;
+}
+.checkbox-combo label {
+  padding-left: 0.5em;
+}
+
+div.checkbox-combo {
+  padding-left: 0.5em;
+}
+
+.required {
+  background-color: var(--secondary-color);
+  color: var(--primary-color);
+  margin: 1em;
 }
 /* .success {
   color: #6fb66f;
@@ -74,11 +95,7 @@ input[aria-invalid="false"] {
 }
 
 */
-.required {
-  background-color: var(--secondary-colour);
-  color: var(--primary-colour);
-  margin: 1em;
-}
+
 /* Hide any elements visibly as well as for aria */
 /* div.feedback-text[aria-hidden="true"] {
   visibility: hidden;
@@ -91,10 +108,3 @@ input[aria-invalid="false"] {
 }
 
 */
-.checkbox-combo label {
-  padding-left: 0.5em;
-}
-
-div.checkbox-combo {
-  padding-left: 0.5em;
-}

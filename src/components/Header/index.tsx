@@ -35,6 +35,8 @@ const Header = () => {
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 800 270"
         >
+          {/* Title used in place of alt text which is not available on SVG */}
+          <title>Global Logic - A Hitachi Group Company</title>
           <path d="M98.73,177.52h5.74L114,203h-5.81l-1.93-5.67H96.74l-2,5.67H89.08Zm-.53,15.61h6.59l-3.2-9.33h-.08Z" />
           <path d="M126.1,177.52h5.59v9.77H142v-9.77h5.6V203H142V192h-10.3v11H126.1Z" />
           <path d="M156.82,181.69h-5.07v-4.17h5.07Zm-5.07,2.85h5.07V203h-5.07Z" />
