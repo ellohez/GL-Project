@@ -92,7 +92,7 @@ const Header = () => {
           className="toggle-theme"
           name="toggle-theme"
           onClick={toggleTheme}
-          aria-pressed={darkMode}
+          aria-pressed={!darkMode}
         >
           Dark Mode Toggle
         </button>
