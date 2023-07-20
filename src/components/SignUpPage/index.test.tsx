@@ -1,6 +1,8 @@
-// import { screen } from "@testing-library/react";
-// import SignUpPage from ".";
-// import { renderComponent } from "../../../test/helpers/render";
+import { screen } from "@testing-library/react";
+
+import SignUpPage from ".";
+import { renderComponent } from "../../../test/helpers/render";
+
 export {};
 
 describe("Sign Up Page", () => {
@@ -13,11 +15,18 @@ describe("Sign Up Page", () => {
     // });
     it.todo("Previous button is enabled on initial render and middle pages");
     it.todo("Previous button is disabled when last page is reached");
-    it.todo("Next button is not enabled");
     it.todo(
       "Should not enable the next button if the page is in a valid state"
     );
     it.todo("Should enable the next button if the page is in a valid state");
+  });
+
+  describe("Next button is disabled on startup", () => {
+    renderComponent(<SignUpPage />);
+
+    const nextBtn: HTMLButtonElement = screen.getByText("Next");
+    expect(nextBtn).toBeInTheDocument();
+    expect(nextBtn).toBeDisabled();
   });
 });
 //const prevBtn: HTMLElement = screen.getByText("Previous");
