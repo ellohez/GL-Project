@@ -1,4 +1,4 @@
-import { fireEvent, screen, waitFor } from "@testing-library/react";
+import { fireEvent, screen } from "@testing-library/react";
 
 import UsernamePage from ".";
 import { renderComponent } from "../../../../test/helpers/render";
@@ -29,12 +29,13 @@ describe("Username Page", () => {
     it("contains the title and input", () => {
       renderComponent(<UsernamePage id={id} />);
 
-      expect(screen.findByText("Your email address"));
+      expect(screen.getByText("Your email address")).toBeInTheDocument();
       expect(screen.getByTestId("email")).toBeInTheDocument();
       // Cannot test the output of error messages - this is tested in <ValidationChecklist />
     });
   });
 
+  // TODO: isValid test still not working!
   describe("interaction with store", () => {
     it("should update the store with the email", () => {
       const { store } = renderComponent(<UsernamePage id={id} />);
