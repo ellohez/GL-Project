@@ -10,6 +10,8 @@
   --gray-shadow-rgba: rgba(7, 7, 7, 0.29);
   --orange-shadow-rgba: rgba(244, 95, 26, 0.85);
   --gl-orange: #f45f1a;
+  --error-red: rgb(177, 16, 48);
+  --success-green: rgb(0, 128, 0);
   /* this helps us to use rem units to set relative sizes for other text
   100% for browsers typically defaults to 16px */
   font-size: 100%;
@@ -26,17 +28,16 @@
 }
 
 .dark-mode {
-  --primary-color: black;
+  --primary-color: rgb(39, 32, 32);
   --secondary-color: white;
   --gray-shadow-rgba: rgba(52, 36, 22, 0.85);
   /* Same as for light mode */
   --orange-shadow-rgba: rgba(244, 95, 26, 0.85);
   --gl-orange: #f45f1a;
+  --error-red: rgb(255, 69, 0);
+  --success-green: rgb(50, 205, 50);
 }
 
-/* body{
-  background-color: var(--primary-color);
-} */
 header {
   margin-bottom: max(3vh, 2rem);
 }
@@ -111,6 +112,9 @@ label {
   padding: 0.2em;
 }
 
+button {
+  box-shadow: 0 4px 10px 2px var(--gray-shadow-rgba);
+}
 button:focus {
   box-shadow: 0 0 1.25em 0 var(--orange-shadow-rgba);
   border: 0.0625px solid var(--gl-orange);

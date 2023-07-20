@@ -15,3 +15,11 @@
 .validation-checklist {
   display: flex;
 }
+
+.fa-check {
+  color: var(--success-green);
+}
+
+.fa-xmark {
+  color: var(--error-red);
+}

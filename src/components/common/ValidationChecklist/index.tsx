@@ -40,7 +40,6 @@ const ValidationChecklist = ({
                   className="fa-solid fa-xmark"
                   role="img"
                   id="error"
-                  style={{ color: "#b22222" }}
                   aria-hidden="true"
                   title="Error:"
                 />
@@ -53,7 +52,6 @@ const ValidationChecklist = ({
                   className="fa-solid fa-check"
                   role="img"
                   id="ok"
-                  style={{ color: "#436e43" }}
                   aria-hidden="true"
                   title="OK:"
                 />
