@@ -35,7 +35,6 @@ describe("Username Page", () => {
     });
   });
 
-  // TODO: isValid test still not working!
   describe("interaction with store", () => {
     it("should update the store with the email", () => {
       const { store } = renderComponent(<UsernamePage id={id} />);
@@ -45,6 +44,8 @@ describe("Username Page", () => {
       const selectEmail = store.getState().newUser.email;
       expect(selectEmail).toBe("test@test.com");
     });
+
+    // TODO: isValid test still not working!
 
     // it("should update the isValid flag in the store", () => {
     //   const { store } = renderComponent(<UsernamePage id={id} />);
