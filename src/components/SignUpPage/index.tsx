@@ -1,11 +1,16 @@
-import React, { useState } from "react";
+import { current } from "@reduxjs/toolkit";
+import React, { useEffect, useState } from "react";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
 
+import { PageRoutes } from "../../router";
 import { useAppSelector } from "../../store";
 import { selectIsValid } from "../../store/signUpPages/selectors";
 import BreadcrumbTrail from "../common/BreadcrumbTrail";
-import PageDisplay from "./PageDisplay";
+// import PageDisplay from "./PageDisplay";
 import "./styles.css";
 
+// TODO: Remove this once pages added to router?
+// Could add title to page but also used as index for Redux
 export const formTitles: Array<string> = [
   "Sign Up - Guidance",
   "Username",
@@ -14,10 +19,25 @@ export const formTitles: Array<string> = [
 ];
 
 const SignUpPage = (): React.JSX.Element => {
-  // Store the current page the user is viewing
-  const [page, setPage] = useState<number>(0);
+  // To attach next button to the router.
+  const navigate = useNavigate();
+
+  // Use Enum values from router - for list of routes
+  // Sign up Page has Guidance page as the default (index) element so no direct path to GuidancePage needed
+  const pages: string[] = [
+    PageRoutes.SignUpPage,
+    PageRoutes.UsernamePage,
+    PageRoutes.PasswordPage,
+  ];
+
+  // Store the current page the user will view next
+  const [page, setPage] = useState(0);
   const lastPage = formTitles.length - 1;
   const pageIsValid = useAppSelector(selectIsValid(formTitles[page]));
+
+  useEffect(() => {
+    setPage(page + 1);
+  }, []);
 
   return (
     <main>
@@ -35,10 +55,14 @@ const SignUpPage = (): React.JSX.Element => {
       <div className="main-container">
         <div className="header">
           {/* Display the relevant title for the current page */}
+          {/* TODO: Make each page responsible for it's own title */}
           <h2>{formTitles[page]}</h2>
         </div>
         <div className="separator"></div>
-        <PageDisplay page={page} />
+        {/* <PageDisplay page={page} /> */}
+
+        {/* Display inner pages here */}
+        <Outlet />
       </div>
 
       {/* Buttons will be controlled here, not via the individual pages */}
@@ -55,17 +79,18 @@ const SignUpPage = (): React.JSX.Element => {
         >
           Previous
         </button>
-        <button
-          className="form-button h4-style"
-          type="button"
-          // TODO: Enable child page components to disable the next button
-          disabled={!pageIsValid}
-          onClick={() => {
-            setPage((currentPg: number) => currentPg + 1);
-          }}
-        >
-          {page === lastPage ? "Submit" : "Next"}
-        </button>
+        <NavLink to={pages[page + 1]}>
+          <button
+            className="form-button h4-style"
+            type="button"
+            disabled={!pageIsValid}
+            // onClick={() => {
+            //   setPage((currentPg: number) => currentPg + 1);
+            // }}
+          >
+            {page === lastPage ? "Submit" : "Next"}
+          </button>
+        </NavLink>
       </div>
     </main>
   );
