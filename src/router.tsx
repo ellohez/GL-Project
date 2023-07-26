@@ -23,8 +23,8 @@ const PasswordPage = React.lazy(
 
 export const enum PageRoutes {
   LandingPage = "/",
-  LogInPage = "/log-in",
-  SignUpPage = "/sign-up", // This includes GuidancePage as index
+  LogInPage = "log-in",
+  SignUpPage = "sign-up", // This includes GuidancePage as index
   UsernamePage = "username",
   PasswordPage = "secure",
 }
@@ -35,6 +35,15 @@ export const formTitles: Array<string> = [
   "Secure your account",
   "Address",
 ];
+
+const NoMatch = () => {
+  return (
+    <div>
+      <h1>OOPs!</h1>
+      <p>404 - not found.</p>
+    </div>
+  );
+};
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -64,7 +73,7 @@ const router = createBrowserRouter(
       </Route>
 
       {/* TODO: Implement this */}
-      {/* <Route path="*" element={<NoMatch />} /> */}
+      <Route path="*" element={<NoMatch />} />
     </Route>
   )
 );
