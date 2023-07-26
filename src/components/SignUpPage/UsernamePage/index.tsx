@@ -10,6 +10,7 @@ import {
 } from "../../../store/signUpPages/selectors";
 import {
   addMessage,
+  createPage,
   resetMessages,
   setValidFalse,
   setValidTrue,
@@ -36,6 +37,13 @@ const UsernamePage = ({ id }: { id: string }): React.JSX.Element => {
   if (isUndefined(messages)) {
     messages = [];
   }
+
+  useEffect(() => {
+    // Ensure that there is always a state object for each page.
+    // This reducer method will create one only if one doesn't
+    // already exist.
+    dispatch(createPage(id));
+  });
 
   // On first render, add all error messages to state,
   // as user has not yet entered valid input
