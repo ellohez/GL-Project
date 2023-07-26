@@ -12,12 +12,13 @@ const GuidancePage = ({ id }: { id: string }): React.JSX.Element => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    // This page has nothing to validate
     dispatch(setValidTrue(id));
     // Ensure that there is always a state object for each page.
     // This reducer method will create one only if one doesn't
     // already exist.
     dispatch(createPage(id));
-  }, [dispatch, id]);
+  });
 
   return (
     <div>
