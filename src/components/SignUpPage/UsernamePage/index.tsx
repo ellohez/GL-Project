@@ -112,6 +112,11 @@ const UsernamePage = ({ id }: { id: string }): React.JSX.Element => {
 
   return (
     <section>
+      <div className="header">
+        {/* Display the relevant title for the current page */}
+        {/* TODO: Make each page responsible for it's own title */}
+        <h2>Username</h2>
+      </div>
       {/* Row of helper text, input or similar 
             control and then the error/success message */}
       <form aria-labelledby="email-legend" onInput={validateEmail}>

@@ -22,6 +22,11 @@ const GuidancePage = ({ id }: { id: string }): React.JSX.Element => {
 
   return (
     <div>
+      <div className="header">
+        {/* Display the relevant title for the current page */}
+        {/* TODO: Make each page responsible for it's own title */}
+        <h2>Sign Up - Guidance</h2>
+      </div>
       {/* TODO: Include instructions for completing sign up - inc save option */}
       <h4>Instructions</h4>
       <p id="instructions">

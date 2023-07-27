@@ -6,6 +6,9 @@ button {
   box-shadow: 0 4px 10px 2px var(--gray-shadow-rgba);
 }
 
+.header {
+  margin: 0.2em;
+}
 form {
   background-color: var(--primary-color);
   padding: 0.2em;
