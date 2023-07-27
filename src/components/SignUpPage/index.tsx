@@ -16,31 +16,19 @@ export const formTitles: Array<string> = [
   "Address",
 ];
 
+// Use Enum values from router - for list of routes
+// Sign up Page has Guidance page as the default (index) element so no direct path to GuidancePage needed
+export const pages: string[] = [
+  PageRoutes.SignUpPage,
+  PageRoutes.UsernamePage,
+  PageRoutes.PasswordPage,
+];
+
 const SignUpPage = (): React.JSX.Element => {
-  // Use Enum values from router - for list of routes
-  // Sign up Page has Guidance page as the default (index) element so no direct path to GuidancePage needed
-  const pages: string[] = [
-    PageRoutes.SignUpPage,
-    PageRoutes.UsernamePage,
-    PageRoutes.PasswordPage,
-  ];
-
-  // const location = useLocation();
-  // Find index of last '/' in pathname use string.substring(string.lastIndexOf("/"))
-  // const indexToSplitBy = location.pathname.lastIndexOf("/");
-  // let pageId: string = location.pathname.substring(indexToSplitBy);
-  // pageId = pageId.replace("/", "").trim();
-  // let linkNextPage = pages[1]; // Initialise to 1st page after guidance page which is the index page
-  // useEffect(() => {
-  //   //setPage(page + 1);
-  //   linkNextPage = pages[currentPage + 1];
-  // }, [pageIsValid]);
-  // const lastPage = formTitles.length - 1;
-
   // Store the current page the user will view next
   const [currentPage, setCurrentPage] = useState(0);
   const lastPage = pages.length - 1;
-  const pageIsValid = useAppSelector(selectIsValid(formTitles[currentPage]));
+  const pageIsValid = useAppSelector(selectIsValid(pages[currentPage]));
   const navigate = useNavigate();
 
   const onPrevious = () => {
@@ -67,21 +55,11 @@ const SignUpPage = (): React.JSX.Element => {
 
       {/* Output the header and page content for the step the user is currently at */}
       <div className="main-container">
-        <div className="header">
-          {/* Display the relevant title for the current page */}
-          {/* TODO: Make each page responsible for it's own title */}
-          <h2>{formTitles[currentPage]}</h2>
-        </div>
-        <div className="separator"></div>
-        {/* <PageDisplay page={page} /> */}
-
         {/* Display inner pages here */}
         <Outlet />
       </div>
 
-      {/* Buttons will be controlled here, not via the individual pages 
-        using valid status from Redux set by the inner page. */}
-      {/* <NavigationButtons id={pageId} /> */}
+      {/* Buttons are controlled here, rather than on the individual pages */}
       <div className="button-row">
         <button
           className="form-button h4-style"
