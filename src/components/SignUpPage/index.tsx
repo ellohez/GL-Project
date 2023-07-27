@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 
-import { PageRoutes } from "../../router";
+import { PageRouteArray } from "../../router";
 import { useAppSelector } from "../../store";
 import { selectIsValid } from "../../store/signUpPages/selectors";
 import BreadcrumbTrail from "../common/BreadcrumbTrail";
@@ -16,19 +16,13 @@ export const formTitles: Array<string> = [
   "Address",
 ];
 
-// Use Enum values from router - for list of routes
-// Sign up Page has Guidance page as the default (index) element so no direct path to GuidancePage needed
-export const pages: string[] = [
-  PageRoutes.SignUpPage,
-  PageRoutes.UsernamePage,
-  PageRoutes.PasswordPage,
-];
-
 const SignUpPage = (): React.JSX.Element => {
   // Store the current page the user will view next
   const [currentPage, setCurrentPage] = useState(0);
-  const lastPage = pages.length - 1;
-  const pageIsValid = useAppSelector(selectIsValid(pages[currentPage]));
+  const lastPage = PageRouteArray.length - 1;
+  const pageIsValid = useAppSelector(
+    selectIsValid(PageRouteArray[currentPage])
+  );
   const navigate = useNavigate();
 
   const onPrevious = () => {
@@ -37,7 +31,7 @@ const SignUpPage = (): React.JSX.Element => {
   };
 
   const onNext = () => {
-    navigate(pages[currentPage + 1]);
+    navigate(PageRouteArray[currentPage + 1]);
     setCurrentPage(currentPage + 1);
   };
 

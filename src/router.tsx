@@ -30,6 +30,14 @@ export const enum PageRoutes {
   PasswordPage = "secure",
 }
 
+// Use Enum values from router - for list of routes
+// Sign up Page has Guidance page as the default (index) element so no direct path to GuidancePage needed
+export const PageRouteArray: string[] = [
+  PageRoutes.SignUpPage,
+  PageRoutes.UsernamePage,
+  PageRoutes.PasswordPage,
+];
+
 const NoMatch = () => {
   const location = useLocation();
   return (
