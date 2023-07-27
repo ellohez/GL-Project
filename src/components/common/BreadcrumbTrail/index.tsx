@@ -1,33 +1,32 @@
 import React, { Fragment } from "react";
+import { useLocation } from "react-router-dom";
 
-import { formTitles } from "../../SignUpPage";
+import { PageRouteArray } from "../../../router";
 import "./styles.css";
-
-// TODO: Clear this? Should titles be passed in rather than imported?
-// interface breadcrumbProps {
-//   formTitles: Array<string>;
-//   currentStep: number;
-// }
 
 const BreadcrumbTrail = ({
   currentStep,
+  totalSteps,
 }: {
   currentStep: number;
+  totalSteps: number;
 }): React.JSX.Element => {
+  // const location = useLocation();
   //  Create an array of Fragments
   const content: Array<JSX.Element> = [];
 
   for (let i = 0; i <= currentStep; i++) {
     content.push(
-      <Fragment key={formTitles[i]}>
+      <Fragment key={PageRouteArray[i]}>
         <div
           className="crumb"
           // if last element - mark as current step for aria,
           // mark all others as false
           aria-current={i === currentStep ? "step" : "false"}
         >
-          <strong>Step {i + 1}</strong>
-          <p>{formTitles[i]}</p>
+          {/* <strong>Step {i + 1}</strong> */}
+          {/* <p>{formTitles[i]}</p> */}
+          <p>{PageRouteArray[i]}</p>
         </div>
         <div className="divider" aria-hidden="true">
           {/* Add chevrons but only BETWEEN steps */}
@@ -41,8 +40,9 @@ const BreadcrumbTrail = ({
 
   content.push(
     <div key="stepsRemaining" className="crumb">
-      <strong>Steps Remaining</strong>
-      <p>{formTitles.length - currentStep}</p>
+      <strong>{`Step ${currentStep + 1} of ${totalSteps}`}</strong>
+      {/* <p>{formTitles.length - currentStep}</p> */}
+      {/* <p>{PageRouteArray.length - currentStep}</p> */}
     </div>
   );
 

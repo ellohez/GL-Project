@@ -44,7 +44,10 @@ const SignUpPage = (): React.JSX.Element => {
       {/* TODO: Add CSS padding to make the <br> tags unneccesary? */}
       <br />
       {/* Draw breadcrumb trail, showing where the user is up to */}
-      <BreadcrumbTrail currentStep={currentPage} />
+      <BreadcrumbTrail
+        currentStep={currentPage}
+        totalSteps={PageRouteArray.length}
+      />
       <br />
 
       {/* Output the header and page content for the step the user is currently at */}
