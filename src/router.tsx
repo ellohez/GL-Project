@@ -30,6 +30,7 @@ export const enum PageRoutes {
   PasswordPage = "secure",
 }
 
+//TODO: Remove if no longer necessary
 export const formTitles: Array<string> = [
   "Sign Up - Guidance",
   "Username",
@@ -59,18 +60,24 @@ const router = createBrowserRouter(
         path={PageRoutes.SignUpPage}
         element={<PageWrapper page={<SignUpPage />} />}
       >
-        {/* TODO: are form titles necessary now? */}
+        {/* Use URL page location section as ID for Redux */}
         <Route
           index
-          element={<PageWrapper page={<GuidancePage id={formTitles[0]} />} />}
+          element={
+            <PageWrapper page={<GuidancePage id={PageRoutes.LandingPage} />} />
+          }
         />
         <Route
           path={PageRoutes.UsernamePage}
-          element={<PageWrapper page={<UsernamePage id={formTitles[1]} />} />}
+          element={
+            <PageWrapper page={<UsernamePage id={PageRoutes.UsernamePage} />} />
+          }
         />
         <Route
           path={PageRoutes.PasswordPage}
-          element={<PageWrapper page={<PasswordPage id={formTitles[2]} />} />}
+          element={
+            <PageWrapper page={<PasswordPage id={PageRoutes.PasswordPage} />} />
+          }
         />
       </Route>
 
