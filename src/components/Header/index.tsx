@@ -7,23 +7,30 @@ import "./styles.css";
 const Header = () => {
   const [darkMode, setDarkMode] = useState<boolean>(false);
 
+  // Toggle the darkMode setting in state and update darkMode in local storage
   const toggleTheme: MouseEventHandler<HTMLButtonElement> = (e) => {
-    // Toggle the darkMode setting in state and update darkMode in local storage
-    setDarkMode(!darkMode);
-    localStorage.setItem("dark-mode", darkMode.toString());
-    darkMode
-      ? document.body.classList.add("dark-mode")
-      : document.body.classList.remove("dark-mode");
+    const darkThemeSetting = localStorage.getItem("dark-mode");
+    // If no setting, or already on - switch off
+    if (darkThemeSetting === null || darkThemeSetting === "true") {
+      localStorage.setItem("dark-mode", "false");
+      setDarkMode(false);
+    } // switch on
+    else {
+      localStorage.setItem("dark-mode", "true");
+      setDarkMode(true);
+    }
   };
 
   useEffect(() => {
     /* Collect dark mode setting from local storage and use this to set 
     state variable. Note: This could be null if not yet stored. */
     const darkThemeSetting = localStorage.getItem("dark-mode");
-    if (darkThemeSetting !== null) {
-      setDarkMode(darkThemeSetting === "true");
-    }
-  }, []);
+    setDarkMode(darkThemeSetting === "true");
+    // Toggle dark class list to reflect dark mode setting
+    darkMode
+      ? document.body.classList.add("dark-mode")
+      : document.body.classList.remove("dark-mode");
+  }, [darkMode]);
 
   return (
     <header>
@@ -92,7 +99,7 @@ const Header = () => {
           className="toggle-theme"
           name="toggle-theme"
           onClick={toggleTheme}
-          aria-pressed={!darkMode}
+          aria-pressed={darkMode}
         >
           Dark Mode Toggle
         </button>
