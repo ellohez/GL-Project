@@ -30,14 +30,6 @@ export const enum PageRoutes {
   PasswordPage = "secure",
 }
 
-//TODO: Remove if no longer necessary
-export const formTitles: Array<string> = [
-  "Sign Up - Guidance",
-  "Username",
-  "Secure your account",
-  "Address",
-];
-
 const NoMatch = () => {
   const location = useLocation();
   return (
