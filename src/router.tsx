@@ -64,7 +64,7 @@ const router = createBrowserRouter(
         <Route
           index
           element={
-            <PageWrapper page={<GuidancePage id={PageRoutes.LandingPage} />} />
+            <PageWrapper page={<GuidancePage id={PageRoutes.SignUpPage} />} />
           }
         />
         <Route
