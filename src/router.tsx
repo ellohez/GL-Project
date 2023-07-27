@@ -3,6 +3,7 @@ import {
   Route,
   createBrowserRouter,
   createRoutesFromElements,
+  useLocation,
 } from "react-router-dom";
 
 import App from "./App";
@@ -37,10 +38,11 @@ export const formTitles: Array<string> = [
 ];
 
 const NoMatch = () => {
+  const location = useLocation();
   return (
     <div>
       <h1>OOPs!</h1>
-      <p>404 - not found.</p>
+      <p>{`404. Bad URL- ${location.pathname} not found.`}</p>
     </div>
   );
 };
