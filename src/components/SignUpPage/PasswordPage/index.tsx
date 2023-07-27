@@ -16,6 +16,7 @@ import {
 } from "../../../store/signUpPages/selectors";
 import {
   addMessage,
+  createPage,
   resetMessages,
   setValidFalse,
   setValidTrue,
@@ -23,7 +24,6 @@ import {
 import ValidationChecklist from "../../common/ValidationChecklist";
 
 const PasswordPage = ({ id }: { id: string }): React.JSX.Element => {
-  // TODO: Complete message text for special char (which chars?)
   enum ValidationText {
     MinLength = "Password must contain at least 8 characters",
     MaxLength = "Password can only contain a maximum of 15 characters",
@@ -36,9 +36,8 @@ const PasswordPage = ({ id }: { id: string }): React.JSX.Element => {
   // Selector hook for Redux store (getter)
   const password = useAppSelector(selectPassword);
   const passwordConfirm = useAppSelector(selectConfirmPassword);
-  // TODO: have two local variables, one for each password input?
   const isValid: boolean = useAppSelector(selectIsValid(id));
-
+  // Password visibility toggle states
   const [pwdIsVisible, setPwdIsVisible] = useState(false);
   const [confirmPwdIsVisible, setConfirmPwdIsVisible] = useState(false);
   // get the Redux  dispatch hook to call actions
@@ -52,9 +51,14 @@ const PasswordPage = ({ id }: { id: string }): React.JSX.Element => {
     messages = [];
   }
 
-  // On first render, add all error messages to state,
-  // as user has not yet entered valid input
   useEffect(() => {
+    // Ensure that there is always a state object for each page.
+    // This reducer method will create one only if one doesn't
+    // already exist.
+    dispatch(createPage(id));
+
+    // On first render, add all error messages to state,
+    // as user has not yet entered valid input
     if (messages?.length === 0) {
       for (const [, vText] of Object.entries(ValidationText)) {
         dispatch(
@@ -163,6 +167,11 @@ const PasswordPage = ({ id }: { id: string }): React.JSX.Element => {
 
   return (
     <section>
+      <div className="header">
+        {/* Display the relevant title for the current page */}
+        {/* TODO: Make each page responsible for it's own title */}
+        <h2>Password</h2>
+      </div>
       <form aria-labelledby="enter-password">
         <fieldset>
           <legend id="enter-password">Create a new password</legend>

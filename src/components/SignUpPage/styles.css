@@ -6,6 +6,9 @@ button {
   box-shadow: 0 4px 10px 2px var(--gray-shadow-rgba);
 }
 
+.header {
+  margin: 0.2em;
+}
 form {
   background-color: var(--primary-color);
   padding: 0.2em;
@@ -20,7 +23,6 @@ h1 {
   box-shadow: 0 0.25em 0.625em 0.125em var(--gray-shadow-rgba);
 }
 
-h2,
 h4 {
   /* Add a top margin to h4s for the inner pages*/
   margin-top: 0.5em;

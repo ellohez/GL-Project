@@ -3,6 +3,7 @@ import {
   Route,
   createBrowserRouter,
   createRoutesFromElements,
+  useLocation,
 } from "react-router-dom";
 
 import App from "./App";
@@ -29,18 +30,20 @@ export const enum PageRoutes {
   PasswordPage = "secure",
 }
 
-export const formTitles: Array<string> = [
-  "Sign Up - Guidance",
-  "Username",
-  "Secure your account",
-  "Address",
+// Use Enum values from router - for list of routes
+// Sign up Page has Guidance page as the default (index) element so no direct path to GuidancePage needed
+export const PageRouteArray: string[] = [
+  PageRoutes.SignUpPage,
+  PageRoutes.UsernamePage,
+  PageRoutes.PasswordPage,
 ];
 
 const NoMatch = () => {
+  const location = useLocation();
   return (
     <div>
       <h1>OOPs!</h1>
-      <p>404 - not found.</p>
+      <p>{`404. Bad URL- ${location.pathname} not found.`}</p>
     </div>
   );
 };
@@ -57,18 +60,24 @@ const router = createBrowserRouter(
         path={PageRoutes.SignUpPage}
         element={<PageWrapper page={<SignUpPage />} />}
       >
-        {/* TODO: are form titles necessary now? */}
+        {/* Use URL page location section as ID for Redux */}
         <Route
           index
-          element={<PageWrapper page={<GuidancePage id={formTitles[0]} />} />}
+          element={
+            <PageWrapper page={<GuidancePage id={PageRoutes.SignUpPage} />} />
+          }
         />
         <Route
           path={PageRoutes.UsernamePage}
-          element={<PageWrapper page={<UsernamePage id={formTitles[1]} />} />}
+          element={
+            <PageWrapper page={<UsernamePage id={PageRoutes.UsernamePage} />} />
+          }
         />
         <Route
           path={PageRoutes.PasswordPage}
-          element={<PageWrapper page={<PasswordPage id={formTitles[2]} />} />}
+          element={
+            <PageWrapper page={<PasswordPage id={PageRoutes.PasswordPage} />} />
+          }
         />
       </Route>
 
