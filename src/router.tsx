@@ -81,7 +81,7 @@ const router = createBrowserRouter(
         />
       </Route>
 
-      {/* TODO: Implement this */}
+      {/* Catch unmatched route */}
       <Route path="*" element={<NoMatch />} />
     </Route>
   )
