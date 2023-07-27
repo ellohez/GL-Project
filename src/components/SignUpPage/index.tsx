@@ -7,8 +7,7 @@ import { selectIsValid } from "../../store/signUpPages/selectors";
 import BreadcrumbTrail from "../common/BreadcrumbTrail";
 import "./styles.css";
 
-// TODO: Remove this once pages added to router?
-// Could add title to page but also used as index for Redux
+// Used for Breadcrumb component - readable titles
 export const formTitles: Array<string> = [
   "Sign Up - Guidance",
   "Username",
