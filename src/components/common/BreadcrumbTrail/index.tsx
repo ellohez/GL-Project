@@ -36,7 +36,7 @@ const BreadcrumbTrail = ({
   content.push(
     <div key="stepsRemaining" className="crumb">
       <strong>Steps Remaining</strong>
-      <p>{formTitles.length - currentStep}</p>
+      <p>{formTitles.length - currentStep - 1}</p>
     </div>
   );
 
