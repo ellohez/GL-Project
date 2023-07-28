@@ -1,4 +1,23 @@
+import { useLoaderData } from "react-router-dom";
+
+// interface SessionInfo {
+//   token: string;
+// }
+
+interface User {
+  username: string;
+  password: string;
+  id: number;
+}
+
+interface Users {
+  users: User[];
+}
+
 const LandingPage = () => {
+  const { users } = useLoaderData() as Users;
+  // console.log(JSON.stringify(users));
+
   return (
     <main>
       <div className="main-container">
@@ -7,6 +26,15 @@ const LandingPage = () => {
         <h3>...are here to enable... (h3)</h3>
         <h4>...screen reader and contrast checking (h4)</h4>
       </div>
+      {users.map((user) => (
+        <div>
+          <p>
+            {user.username}
+            {user.id}
+            {user.password}
+          </p>
+        </div>
+      ))}
     </main>
   );
 };
