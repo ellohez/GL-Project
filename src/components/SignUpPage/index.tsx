@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
 import { PageRouteArray } from "../../router";
 import { useAppSelector } from "../../store";
@@ -12,26 +12,41 @@ export const formTitles: Array<string> = [
   "Sign Up - Guidance",
   "Username",
   "Secure your account",
-  "Address",
+  // "Address",
 ];
 
 const SignUpPage = (): React.JSX.Element => {
   // Store the current page the user will view next
-  const [currentPage, setCurrentPage] = useState(0);
-  const lastPage = PageRouteArray.length - 1;
-  const pageIsValid = useAppSelector(
-    selectIsValid(PageRouteArray[currentPage])
-  );
+  // const [currentPage, setCurrentPage] = useState(0);
+
   const navigate = useNavigate();
+  const pathname = useLocation().pathname;
+  const currentPath = pathname.replace("/sign-up/", "");
+  //TODO: Remove test code
+  console.log(`Pathname = ${pathname} - Current Path = ${currentPath}`);
+  let pageNum: number = PageRouteArray.findIndex(
+    (route) => route === currentPath
+  );
+  if (pageNum < 0) {
+    // TODO: Throw error here.
+    pageNum = 0;
+  }
+  const lastPage = PageRouteArray.length - 1;
+
+  const pageIsValid = useAppSelector(
+    selectIsValid(PageRouteArray[pageNum])
+    // selectIsValid(PageRouteArray[currentPage])
+  );
 
   const onPrevious = () => {
-    setCurrentPage(currentPage - 1);
+    // setCurrentPage(currentPage - 1);
     navigate(-1);
   };
 
   const onNext = () => {
-    navigate(PageRouteArray[currentPage + 1]);
-    setCurrentPage(currentPage + 1);
+    navigate(PageRouteArray[pageNum + 1]);
+    // navigate(PageRouteArray[currentPage + 1]);
+    // setCurrentPage(currentPage + 1);
   };
 
   return (
@@ -43,7 +58,7 @@ const SignUpPage = (): React.JSX.Element => {
       {/* TODO: Add CSS padding to make the <br> tags unneccesary? */}
       <br />
       {/* Draw breadcrumb trail, showing where the user is up to */}
-      <BreadcrumbTrail currentStep={currentPage} />
+      <BreadcrumbTrail currentStep={pageNum} />
       <br />
 
       {/* Output the header and page content for the step the user is currently at */}
@@ -57,7 +72,7 @@ const SignUpPage = (): React.JSX.Element => {
         <button
           className="form-button h4-style"
           // Aria-disabled attribute not needed if disabled attribute included
-          disabled={currentPage === 0}
+          disabled={pageNum === 0}
           // No need to add Aria role of 'button' if button has type='button'
           type="button"
           // onClick={() => {
@@ -76,7 +91,7 @@ const SignUpPage = (): React.JSX.Element => {
           // }}
           onClick={onNext}
         >
-          {currentPage === lastPage ? "Submit" : "Next"}
+          {pageNum === lastPage ? "Submit" : "Next"}
         </button>
       </div>
     </main>
