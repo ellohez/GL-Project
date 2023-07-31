@@ -55,7 +55,7 @@ const router = createBrowserRouter(
       <Route
         index
         element={<PageWrapper page={<LandingPage />} />}
-        loader={userLoader}
+        //loader={userLoader}
       />
       <Route
         path={PageRoutes.LogInPage}
