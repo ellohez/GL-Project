@@ -8,7 +8,8 @@ import {
 
 import App from "./App";
 import PageWrapper from "./components/common/PageWrapper";
-import { userLoader } from "./loaders";
+
+// import { userLoader } from "./loaders";
 
 const LandingPage = React.lazy(() => import("./components/LandingPage"));
 const LogInPage = React.lazy(() => import("./components/LogInPage"));
