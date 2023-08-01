@@ -1,0 +1,24 @@
+{
+  "users": [
+    {
+      "username": "user-1email@hotmail.com",
+      "password": "yetAn0th3rPswd",
+      "id": 0
+    },
+    {
+      "username": "sendmemail@blag.com",
+      "password": "0n3Mr3Passw0rd",
+      "id": 1
+    },
+    {
+      "username": "spoofuser@live.co.uk",
+      "password": "thisIsaCrapPswd",
+      "id": 2
+    }
+  ],
+  "sessions": [
+    {
+      "token": "89$£%-GL-280723"
+    }
+  ]
+}

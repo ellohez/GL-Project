@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
 import { PageRouteArray } from "../../router";
@@ -23,7 +23,7 @@ const SignUpPage = (): React.JSX.Element => {
   const pathname = useLocation().pathname;
   const currentPath = pathname.replace("/sign-up/", "");
   //TODO: Remove test code
-  console.log(`Pathname = ${pathname} - Current Path = ${currentPath}`);
+  // console.log(`Pathname = ${pathname} - Current Path = ${currentPath}`);
   let pageNum: number = PageRouteArray.findIndex(
     (route) => route === currentPath
   );

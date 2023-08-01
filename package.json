@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "api": "json-server -w data/db.json -p 3333 --delay 1500",
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
@@ -16,7 +17,6 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.5",
-    "axios": "^1.4.0",
     "lodash": "^4.17.21",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -40,6 +40,7 @@
     "@typescript-eslint/parser": "^5.59.6",
     "@vitejs/plugin-react-swc": "^3.3.1",
     "@vitest/coverage-c8": "^0.31.1",
+    "axios": "^1.4.0",
     "axios-mock-adapter": "^1.21.4",
     "eslint": "^8.40.0",
     "eslint-config-prettier": "^8.8.0",

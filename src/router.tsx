@@ -9,6 +9,8 @@ import {
 import App from "./App";
 import PageWrapper from "./components/common/PageWrapper";
 
+// import { userLoader } from "./loaders";
+
 const LandingPage = React.lazy(() => import("./components/LandingPage"));
 const LogInPage = React.lazy(() => import("./components/LogInPage"));
 const SignUpPage = React.lazy(() => import("./components/SignUpPage"));
@@ -51,7 +53,11 @@ const NoMatch = () => {
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path={PageRoutes.LandingPage} element={<App />}>
-      <Route index element={<PageWrapper page={<LandingPage />} />} />
+      <Route
+        index
+        element={<PageWrapper page={<LandingPage />} />}
+        //loader={userLoader}
+      />
       <Route
         path={PageRoutes.LogInPage}
         element={<PageWrapper page={<LogInPage />} />}
