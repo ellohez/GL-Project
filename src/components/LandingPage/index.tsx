@@ -52,8 +52,8 @@ const LandingPage = () => {
       {users?.map((user) => (
         <div key={user.id}>
           <p>
-            {user.username}
-            {user.password}
+            <span>{user.username}</span>
+            <span>{user.password}</span>
           </p>
         </div>
       ))}
