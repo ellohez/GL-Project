@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 
 import App from "./App";
+import AddressPage from "./components/SignUpPage/AddressPage";
 import PageWrapper from "./components/common/PageWrapper";
 
 // import { userLoader } from "./loaders";
@@ -30,6 +31,7 @@ export const enum PageRoutes {
   SignUpPage = "sign-up", // This includes GuidancePage as index
   UsernamePage = "username",
   PasswordPage = "secure",
+  AddressPage = "address",
 }
 
 // Use Enum values from router - for list of routes
@@ -38,6 +40,7 @@ export const PageRouteArray: string[] = [
   PageRoutes.SignUpPage,
   PageRoutes.UsernamePage,
   PageRoutes.PasswordPage,
+  PageRoutes.AddressPage,
 ];
 
 const NoMatch = () => {
@@ -83,6 +86,12 @@ const router = createBrowserRouter(
           path={PageRoutes.PasswordPage}
           element={
             <PageWrapper page={<PasswordPage id={PageRoutes.PasswordPage} />} />
+          }
+        />
+        <Route
+          path={PageRoutes.AddressPage}
+          element={
+            <PageWrapper page={<AddressPage id={PageRoutes.AddressPage} />} />
           }
         />
       </Route>

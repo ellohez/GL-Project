@@ -12,7 +12,7 @@ export const formTitles: Array<string> = [
   "Sign Up - Guidance",
   "Username",
   "Secure your account",
-  // "Address",
+  "Address",
 ];
 
 const SignUpPage = (): React.JSX.Element => {
