@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
-import { PageRouteArray } from "../../router";
+import { PageRouteArray, PageRoutes } from "../../router";
 import { useAppSelector } from "../../store";
 import { selectIsValid } from "../../store/signUpPages/selectors";
 import BreadcrumbTrail from "../common/BreadcrumbTrail";
@@ -16,14 +16,10 @@ export const formTitles: Array<string> = [
 ];
 
 const SignUpPage = (): React.JSX.Element => {
-  // Store the current page the user will view next
-  // const [currentPage, setCurrentPage] = useState(0);
-
+  // Calculate the current page from the URL section
   const navigate = useNavigate();
   const pathname = useLocation().pathname;
   const currentPath = pathname.replace("/sign-up/", "");
-  //TODO: Remove test code
-  // console.log(`Pathname = ${pathname} - Current Path = ${currentPath}`);
   let pageNum: number = PageRouteArray.findIndex(
     (route) => route === currentPath
   );
@@ -31,22 +27,41 @@ const SignUpPage = (): React.JSX.Element => {
     // TODO: Throw error here.
     pageNum = 0;
   }
-  const lastPage = PageRouteArray.length - 1;
 
-  const pageIsValid = useAppSelector(
-    selectIsValid(PageRouteArray[pageNum])
-    // selectIsValid(PageRouteArray[currentPage])
-  );
+  // Store the current page by it's name - so we can control
+  // the text on the 'Next' button and what happens when page is complete
+  const pageRoute: string = PageRouteArray[pageNum];
+  // Need to know if we are at the last page for the 'Next' button to change
+  const lastPage = PageRouteArray.length - 1;
+  // Get isValid status for subpage from Redux.
+  const pageIsValid = useAppSelector(selectIsValid(PageRouteArray[pageNum]));
+
+  const [nextButtonText, setNextButtonText] = useState<string>("Next");
+  // User can 'Save and Continue' once username and password complete
+  // The last page should be 'Submit'
+  useEffect(() => {
+    switch (pageRoute) {
+      case PageRoutes.SignUpPage:
+      case PageRoutes.UsernamePage:
+        setNextButtonText("Next");
+        break;
+      case PageRoutes.PasswordPage:
+        setNextButtonText("Save and Continue");
+        break;
+      case PageRoutes.AddressPage:
+        setNextButtonText("Submit");
+        break;
+      default:
+        setNextButtonText("Next");
+    }
+  }, [pageRoute]);
 
   const onPrevious = () => {
-    // setCurrentPage(currentPage - 1);
     navigate(-1);
   };
 
   const onNext = () => {
     navigate(PageRouteArray[pageNum + 1]);
-    // navigate(PageRouteArray[currentPage + 1]);
-    // setCurrentPage(currentPage + 1);
   };
 
   return (
@@ -75,9 +90,6 @@ const SignUpPage = (): React.JSX.Element => {
           disabled={pageNum === 0}
           // No need to add Aria role of 'button' if button has type='button'
           type="button"
-          // onClick={() => {
-          //   setPage((currentPg: number) => currentPg - 1);
-          // }}
           onClick={onPrevious}
         >
           Previous
@@ -86,12 +98,10 @@ const SignUpPage = (): React.JSX.Element => {
           className="form-button h4-style"
           type="button"
           disabled={!pageIsValid}
-          // onClick={() => {
-          //   setPage((currentPg: number) => currentPg + 1);
-          // }}
           onClick={onNext}
         >
-          {pageNum === lastPage ? "Submit" : "Next"}
+          {nextButtonText}
+          {/* {pageNum === lastPage ? "Submit" : "Next"} */}
         </button>
       </div>
     </main>
