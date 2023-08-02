@@ -25,7 +25,7 @@ const AddressPage = ({ id }: { id: string }) => {
             <input
               className="block-input"
               type="text"
-              aria-aria-labelledby="house-num-label"
+              aria-labelledby="house-num-label"
               aria-required="true"
               autoComplete="address-line1"
             />
