@@ -19,6 +19,7 @@ export const usersApiSlice = createApi({
         body: newUser,
         // Getting the result as text makes it easier to parse into JSON
         responseHandler: (response) => response.text(),
+        // responseHandler: (response) => response.json(),
       }),
       invalidatesTags: ["Users"],
       // transformResponse: (response: { user: {data: User}}) =>
