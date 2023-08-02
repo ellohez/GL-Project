@@ -6,7 +6,7 @@ import { useAddNewUserMutation } from "../../services/usersAPI";
 import { useAppSelector } from "../../store";
 import { selectEmail, selectPassword } from "../../store/newUser/selectors";
 import { selectIsValid } from "../../store/signUpPages/selectors";
-import { NewUser } from "../../types/services";
+import { NewUser, User } from "../../types/services";
 import BreadcrumbTrail from "../common/BreadcrumbTrail";
 import "./styles.css";
 
@@ -70,31 +70,44 @@ const SignUpPage = (): React.JSX.Element => {
     navigate(-1);
   };
 
-  const [addNewUser] = useAddNewUserMutation();
+  const [addNewUser, data] = useAddNewUserMutation();
+  const savedUser: User = {
+    username: newUser.username,
+    password: newUser.password,
+    id: -1,
+  };
   const saveNewUser = async () => {
-    const userJsonData: string = JSON.stringify(newUser);
-    console.log(`SignUpPage.onNext adding new user = ${userJsonData}`);
+    //const userJsonData: string = JSON.stringify(newUser);
+    //console.log(`SignUpPage.onNext adding new user = ${userJsonData}`);
     try {
       const payload = await addNewUser(newUser).unwrap();
-      console.log("fulfilled", payload);
-      console.log(`JSON.parse result`, JSON.parse(payload));
-      // const savedUser = JSON.parse(payload);
+      //console.log("fulfilled", payload);
+      //console.log(`JSON.parse result`, JSON.parse(payload));
+      const jsonData = JSON.parse(payload);
+      savedUser.id = jsonData.id as number;
+      //console.log(data.data);
     } catch (error) {
       console.log(`SignUpPage.saveNewUser rejected error = ${error}`);
     }
   };
 
-  const onNext = () => {
+  const onNext = async () => {
     // Before we navigate away, determine the page and complete any
     // necessary actions.
 
     //TODO: If username page, check if user already exists.
 
     if (pageRoute === PageRoutes.PasswordPage && pageIsValid) {
-      saveNewUser().then();
+      await saveNewUser();
+      // TODO: save ID to Redux - user slice.
+      console.log("Data = ", data.data);
     }
     // TODO: for later pages, update user in DB
 
+    console.log(
+      "Finished saving user and result is: ",
+      JSON.stringify(savedUser)
+    );
     navigate(PageRouteArray[pageNum + 1]);
   };
 
