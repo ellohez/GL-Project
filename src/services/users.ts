@@ -1,30 +1,26 @@
 import axios from "axios";
 
-export interface User {
-  username: string;
-  password: string;
-  id: number;
-}
+import { NewUser, User } from "../types/services";
 
-export interface NewUser {
-  username: string;
-  password: string;
-}
+export const BASE_URL = `http://localhost:3333`;
 
-const BASE_URL = `http://localhost:3333`;
-
+// Add a new user to the DB (username and password)
 export const postUser = async (userData: NewUser) => {
   try {
-    const { data } = await axios.post<User>(`${BASE_URL}/users`, userData, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const { data } = await axios.post<string>(
+      `${BASE_URL}/users`,
+      JSON.stringify(userData),
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
     // TODO: Remove test code
     // console.log(JSON.stringify(data, null, 4));
 
-    return data;
+    return JSON.parse(data);
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.log("postUser - error message: ", error.message);
@@ -36,6 +32,7 @@ export const postUser = async (userData: NewUser) => {
   }
 };
 
+// Get all users from DB
 export const getUsers = async () => {
   try {
     const { data } = await axios.get<User[]>(`${BASE_URL}/users`, {
@@ -58,7 +55,8 @@ export const getUsers = async () => {
   }
 };
 
-export const getUser = async (userId: number) => {
+// Get a particular user by their ID number
+export const getUserById = async (userId: number) => {
   try {
     const { data } = await axios.get<User>(`${BASE_URL}/users/${userId}`, {
       headers: {
@@ -68,10 +66,33 @@ export const getUser = async (userId: number) => {
     return data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      console.log("getUser - error message: ", error.message);
+      console.log("getUserById - error message: ", error.message);
       return error.message;
     } else {
-      console.log("getUser - unexpected error: ", error);
+      console.log("getUserById - unexpected error: ", error);
+      return "An unexpected error occurred";
+    }
+  }
+};
+
+// Search DB by username
+export const getUserByUsername = async (username: string) => {
+  try {
+    const { data } = await axios.get<string>(
+      `${BASE_URL}/users?username=${username}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return JSON.parse(data);
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log("getUserById - error message: ", error.message);
+      return error.message;
+    } else {
+      console.log("getUserById - unexpected error: ", error);
       return "An unexpected error occurred";
     }
   }
