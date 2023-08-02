@@ -17,8 +17,12 @@ export const usersApiSlice = createApi({
         url: ``,
         method: "POST",
         body: newUser,
+        // Getting the result as text makes it easier to parse into JSON
+        responseHandler: (response) => response.text(),
       }),
       invalidatesTags: ["Users"],
+      // transformResponse: (response: { user: {data: User}}) =>
+      //   response.user,
     }),
   }),
 });
