@@ -2,8 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
 import { PageRouteArray, PageRoutes } from "../../router";
+import {
+  useAddNewUserMutation,
+  useGetUserByUsernameQuery,
+} from "../../services/usersAPI";
 import { useAppSelector } from "../../store";
+import { selectEmail, selectPassword } from "../../store/newUser/selectors";
 import { selectIsValid } from "../../store/signUpPages/selectors";
+import { NewUser, User } from "../../types/services";
 import BreadcrumbTrail from "../common/BreadcrumbTrail";
 import "./styles.css";
 
@@ -23,6 +29,7 @@ const SignUpPage = (): React.JSX.Element => {
   let pageNum: number = PageRouteArray.findIndex(
     (route) => route === currentPath
   );
+
   if (pageNum < 0) {
     // TODO: Throw error here.
     pageNum = 0;
@@ -32,9 +39,15 @@ const SignUpPage = (): React.JSX.Element => {
   // the text on the 'Next' button and what happens when page is complete
   const pageRoute: string = PageRouteArray[pageNum];
   // Need to know if we are at the last page for the 'Next' button to change
-  const lastPage = PageRouteArray.length - 1;
+  const lastPage: string = PageRouteArray[PageRouteArray.length - 1];
   // Get isValid status for subpage from Redux.
   const pageIsValid = useAppSelector(selectIsValid(PageRouteArray[pageNum]));
+
+  // Subscribe to newUser information from Redux
+  const newUser: NewUser = {
+    username: useAppSelector(selectEmail),
+    password: useAppSelector(selectPassword),
+  };
 
   const [nextButtonText, setNextButtonText] = useState<string>("Next");
   // User can 'Save and Continue' once username and password complete
@@ -48,19 +61,45 @@ const SignUpPage = (): React.JSX.Element => {
       case PageRoutes.PasswordPage:
         setNextButtonText("Save and Continue");
         break;
-      case PageRoutes.AddressPage:
+      case lastPage: // PageRoutes.AddressPage:
         setNextButtonText("Submit");
         break;
       default:
         setNextButtonText("Next");
     }
-  }, [pageRoute]);
+  }, [pageRoute, lastPage]);
 
   const onPrevious = () => {
     navigate(-1);
   };
 
+  const [addNewUser] = useAddNewUserMutation();
+  let savedUser: User | null = null;
+
+  const saveNewUser = async () => {
+    const userJsonData: string = JSON.stringify(newUser);
+    console.log(`SignUpPage.onNext adding new user = ${userJsonData}`);
+    try {
+      const payload = await addNewUser(newUser).unwrap();
+      console.log("fulfilled", payload);
+      console.log(`JSON.parse result`, JSON.parse(payload));
+      savedUser = JSON.parse(payload);
+    } catch (error) {
+      console.log(`SignUpPage.saveNewUser rejected error = ${error}`);
+    }
+  };
+
   const onNext = () => {
+    // Before we navigate away, determine the page and complete any
+    // necessary actions.
+
+    //TODO: If username page, check if user already exists.
+
+    if (pageRoute === PageRoutes.PasswordPage && pageIsValid) {
+      saveNewUser().then();
+    }
+    // TODO: for later pages, update user in DB
+
     navigate(PageRouteArray[pageNum + 1]);
   };
 
@@ -101,7 +140,6 @@ const SignUpPage = (): React.JSX.Element => {
           onClick={onNext}
         >
           {nextButtonText}
-          {/* {pageNum === lastPage ? "Submit" : "Next"} */}
         </button>
       </div>
     </main>
