@@ -2,14 +2,11 @@ import React, { useEffect, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
 import { PageRouteArray, PageRoutes } from "../../router";
-import {
-  useAddNewUserMutation,
-  useGetUserByUsernameQuery,
-} from "../../services/usersAPI";
+import { useAddNewUserMutation } from "../../services/usersAPI";
 import { useAppSelector } from "../../store";
 import { selectEmail, selectPassword } from "../../store/newUser/selectors";
 import { selectIsValid } from "../../store/signUpPages/selectors";
-import { NewUser, User } from "../../types/services";
+import { NewUser } from "../../types/services";
 import BreadcrumbTrail from "../common/BreadcrumbTrail";
 import "./styles.css";
 
@@ -74,8 +71,6 @@ const SignUpPage = (): React.JSX.Element => {
   };
 
   const [addNewUser] = useAddNewUserMutation();
-  let savedUser: User | null = null;
-
   const saveNewUser = async () => {
     const userJsonData: string = JSON.stringify(newUser);
     console.log(`SignUpPage.onNext adding new user = ${userJsonData}`);
@@ -83,7 +78,7 @@ const SignUpPage = (): React.JSX.Element => {
       const payload = await addNewUser(newUser).unwrap();
       console.log("fulfilled", payload);
       console.log(`JSON.parse result`, JSON.parse(payload));
-      savedUser = JSON.parse(payload);
+      // const savedUser = JSON.parse(payload);
     } catch (error) {
       console.log(`SignUpPage.saveNewUser rejected error = ${error}`);
     }
