@@ -3,11 +3,17 @@
     {
       "email": "spoofuser@live.co.uk",
       "password": "$2a$10$0kygylJoUG85v4IsV7jQNuBJt9C6wVPY.jcw3YCf/o31gJl2/DFnC",
+      "firstName": "Bob",
+      "surname": "Cratchitt",
+      "DOB": "1999-09-01",
       "id": 1
     },
     {
       "email": "user1email@hotmail.com",
       "password": "$2a$10$zpROYqg.9D8QQsn20rWJhu8A7pN9Bn08EZwPz2XniaLgLO8IS0576",
+      "firstName": "Sandy",
+      "surname": "Shore",
+      "DOB": "1980-08-01",
       "id": 2
     },
     {
