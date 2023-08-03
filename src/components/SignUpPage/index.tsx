@@ -100,14 +100,14 @@ const SignUpPage = (): React.JSX.Element => {
     if (pageRoute === PageRoutes.PasswordPage && pageIsValid) {
       await saveNewUser();
       // TODO: save ID to Redux - user slice.
-      console.log("Data = ", data.data);
+      //console.log("Data = ", data.data);
+      console.log(
+        "Finished saving user and result is: ",
+        JSON.stringify(savedUser)
+      );
     }
     // TODO: for later pages, update user in DB
 
-    console.log(
-      "Finished saving user and result is: ",
-      JSON.stringify(savedUser)
-    );
     navigate(PageRouteArray[pageNum + 1]);
   };
 
