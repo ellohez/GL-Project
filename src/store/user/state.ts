@@ -1,9 +1,13 @@
 export interface UserState {
-  name: string;
+  firstName: string;
+  lastName: string;
+  id: number;
 }
 
 export function createInitialUserState(): UserState {
   return {
-    name: "",
+    firstName: "",
+    lastName: "",
+    id: -1,
   };
 }
