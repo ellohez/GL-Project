@@ -1,9 +1,9 @@
 import { useAppSelector } from "../../store";
-import { selectUserName } from "../../store/user/selectors";
+import { selectUserFullname } from "../../store/user/selectors";
 import LogInForm from "../LogInForm";
 
 const LogInPage = () => {
-  const userName = useAppSelector(selectUserName);
+  const userName = useAppSelector(selectUserFullname);
 
   return (
     <main>
