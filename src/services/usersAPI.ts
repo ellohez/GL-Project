@@ -6,11 +6,11 @@ import { NewUser, User } from "../types/services";
 export const usersApiSlice = createApi({
   reducerPath: "usersApi",
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3333/users" }),
-  tagTypes: ["Users"],
+  tagTypes: ["User"],
   endpoints: (builder) => ({
     getUserByUsername: builder.query({
       query: (username: string) => `?username=${username}`,
-      providesTags: ["Users"],
+      providesTags: ["User"],
     }),
     addNewUser: builder.mutation({
       query: (newUser: NewUser) => ({
@@ -21,7 +21,7 @@ export const usersApiSlice = createApi({
         responseHandler: (response) => response.text(),
         // responseHandler: (response) => response.json(),
       }),
-      invalidatesTags: ["Users"],
+      invalidatesTags: ["User"],
       // transformResponse: (response: { user: {data: User}}) =>
       //   response.user,
     }),
