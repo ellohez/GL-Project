@@ -112,6 +112,34 @@ label {
   padding: 0.2em;
 }
 
+form {
+  background-color: var(--primary-color);
+  padding: 0.2em;
+}
+
+.help-label {
+  display: block;
+  width: fit-content;
+  color: var(--secondary-color);
+  padding: 0.2em;
+  margin: 0.2em 0;
+  font-weight: 700;
+}
+
+.block-input {
+  display: block;
+  padding: 0.5em;
+  margin: 0.4em 0.5em;
+  border-radius: 2px;
+  width: 50%;
+  transition: width 0.35s ease-in-out;
+  border-color: var(--secondary-color);
+}
+
+.block-input:focus {
+  border: 1.5px solid var(--secondary-color);
+  width: 60%;
+}
 button {
   box-shadow: 0 4px 10px 2px var(--gray-shadow-rgba);
 }

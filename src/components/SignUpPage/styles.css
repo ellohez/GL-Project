@@ -9,10 +9,7 @@ button {
 .header {
   margin: 0.2em;
 }
-form {
-  background-color: var(--primary-color);
-  padding: 0.2em;
-}
+
 fieldset {
   padding: 2em;
 }
@@ -27,7 +24,12 @@ h4 {
   /* Add a top margin to h4s for the inner pages*/
   margin-top: 0.5em;
 }
-.help-label {
+/* Moved to app.css */
+/* form {
+  background-color: var(--primary-color);
+  padding: 0.2em;
+} */
+/* .help-label {
   display: block;
   width: fit-content;
   color: var(--secondary-color);
@@ -36,12 +38,13 @@ h4 {
   font-weight: 700;
 }
 
+*/
 div.separator {
   border-top: 0.1rem solid var(--secondary-color);
   margin: 1rem 0.3rem;
 }
 
-.block-input {
+/* .block-input {
   display: block;
   padding: 0.5em;
   margin: 0.4em 0.5em;
@@ -55,6 +58,7 @@ div.separator {
   border: 1.5px solid var(--secondary-color);
   width: 60%;
 }
+*/
 .button-row {
   width: 100%;
   display: flex;
