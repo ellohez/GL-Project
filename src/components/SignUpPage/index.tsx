@@ -42,7 +42,7 @@ const SignUpPage = (): React.JSX.Element => {
 
   // Subscribe to newUser information from Redux
   const newUser: NewUser = {
-    username: useAppSelector(selectEmail),
+    email: useAppSelector(selectEmail),
     password: useAppSelector(selectPassword),
   };
 
@@ -72,15 +72,19 @@ const SignUpPage = (): React.JSX.Element => {
 
   const [addNewUser, data] = useAddNewUserMutation();
   const savedUser: User = {
-    username: newUser.username,
-    password: newUser.password,
+    email: newUser.email,
     id: -1,
   };
   const saveNewUser = async () => {
     //const userJsonData: string = JSON.stringify(newUser);
     //console.log(`SignUpPage.onNext adding new user = ${userJsonData}`);
     try {
-      const payload = await addNewUser(newUser).unwrap();
+      // const payload = await addNewUser(newUser).unwrap();
+      const payload = await addNewUser({
+        email: newUser.email,
+        password: newUser.password,
+      }).unwrap();
+
       //console.log("fulfilled", payload);
       //console.log(`JSON.parse result`, JSON.parse(payload));
       const jsonData = JSON.parse(payload);
