@@ -15,10 +15,17 @@ const userSlice = createSlice({
     setUserId(state, action: PayloadAction<number>) {
       state.id = action.payload;
     },
+    setSignUpComplete(state, action: PayloadAction<boolean>) {
+      state.signUpComplete = action.payload;
+    },
   },
 });
 
-export const { setUserFirstName, setUserLastName, setUserId } =
-  userSlice.actions;
+export const {
+  setUserFirstName,
+  setUserLastName,
+  setSignUpComplete,
+  setUserId,
+} = userSlice.actions;
 
 export default userSlice.reducer;

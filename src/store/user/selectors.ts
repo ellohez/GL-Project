@@ -19,6 +19,11 @@ export const selectUserFullname = createSelector(
   (userState) => `${userState.firstName} ${userState.lastName}`
 );
 
+export const selectSignUpComplete = createSelector(
+  selectUserState,
+  (userState) => userState.signUpComplete
+);
+
 export const selectUserId = createSelector(
   selectUserState,
   (userState) => userState.id
