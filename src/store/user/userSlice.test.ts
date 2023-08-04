@@ -15,6 +15,7 @@ describe("userSlice", () => {
         firstName: "John",
         lastName: "Smith",
         id: -1,
+        signUpComplete: false,
       });
     });
   });
