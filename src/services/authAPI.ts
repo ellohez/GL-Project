@@ -4,8 +4,9 @@ import { NewUser } from "../types/services";
 
 //TODO: Add TS types to endpoints
 export const authApiSlice = createApi({
-  reducerPath: "usersApi",
+  reducerPath: "authApi",
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3333/login" }),
+  tagTypes: ["User"],
   endpoints: (builder) => ({
     loginUser: builder.mutation({
       query: (newUser: NewUser) => ({
@@ -16,7 +17,7 @@ export const authApiSlice = createApi({
         responseHandler: (response) => response.text(),
         // responseHandler: (response) => response.json(),
       }),
-      //invalidatesTags: ["Users"],
+      invalidatesTags: ["User"],
       // transformResponse: (response: {data: User}) =>
       //   response.user,
     }),
