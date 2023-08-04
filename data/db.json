@@ -6,6 +6,7 @@
       "firstName": "Bob",
       "surname": "Cratchitt",
       "DOB": "1999-09-01",
+      "signUpComplete": true,
       "id": 1
     },
     {
@@ -14,11 +15,13 @@
       "firstName": "Sandy",
       "surname": "Shore",
       "DOB": "1980-08-01",
+      "signUpComplete": true,
       "id": 2
     },
     {
       "email": "sendmemail@blag.com",
       "password": "$2a$10$elXfq4Z3lgvL02lQsCg5iugJefRXo2u/GK3GCacl3GHFz31bmx4Ly",
+      "signUpComplete": false,
       "id": 3
     }
   ],
