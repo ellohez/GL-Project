@@ -1,12 +1,14 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
 import { PageRouteArray, PageRoutes } from "../../router";
-import { useAddNewUserMutation } from "../../services/usersAPI";
-import { useAppSelector } from "../../store";
+import { postUser } from "../../services/users";
+import { useAppDispatch, useAppSelector } from "../../store";
 import { selectEmail, selectPassword } from "../../store/newUser/selectors";
 import { selectIsValid } from "../../store/signUpPages/selectors";
-import { NewUser, User } from "../../types/services";
+import { setSignUpComplete, setUserId } from "../../store/user/userSlice";
+import { NewUser } from "../../types/services";
 import BreadcrumbTrail from "../common/BreadcrumbTrail";
 import "./styles.css";
 
@@ -19,8 +21,11 @@ export const formTitles: Array<string> = [
 ];
 
 const SignUpPage = (): React.JSX.Element => {
-  // Calculate the current page from the URL section
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const [errorMessage, setErrorMessage] = useState("");
+  const [success, setSuccess] = useState(false);
+  // Calculate the current page from the URL section
   const pathname = useLocation().pathname;
   const currentPath = pathname.replace("/sign-up/", "");
   let pageNum: number = PageRouteArray.findIndex(
@@ -50,6 +55,7 @@ const SignUpPage = (): React.JSX.Element => {
   // User can 'Save and Continue' once username and password complete
   // The last page should be 'Submit'
   useEffect(() => {
+    setErrorMessage("");
     switch (pageRoute) {
       case PageRoutes.SignUpPage:
       case PageRoutes.UsernamePage:
@@ -70,49 +76,70 @@ const SignUpPage = (): React.JSX.Element => {
     navigate(-1);
   };
 
-  const [addNewUser, data] = useAddNewUserMutation();
-  const savedUser: User = {
-    email: newUser.email,
-    id: -1,
-  };
-  const saveNewUser = async () => {
-    //const userJsonData: string = JSON.stringify(newUser);
-    //console.log(`SignUpPage.onNext adding new user = ${userJsonData}`);
-    try {
-      // const payload = await addNewUser(newUser).unwrap();
-      const payload = await addNewUser({
-        email: newUser.email,
-        password: newUser.password,
-      }).unwrap();
-
-      //console.log("fulfilled", payload);
-      //console.log(`JSON.parse result`, JSON.parse(payload));
-      const jsonData = JSON.parse(payload);
-      savedUser.id = jsonData.id as number;
-      //console.log(data.data);
-    } catch (error) {
-      console.log(`SignUpPage.saveNewUser rejected error = ${error}`);
-    }
+  const storeUserData = (user: {
+    email: string;
+    id: number;
+    signUpComplete: boolean;
+  }) => {
+    dispatch(setUserId(user.id));
+    dispatch(setSignUpComplete(user.signUpComplete));
   };
 
+  // Handle next button click for all sub pages
   const onNext = async () => {
+    setSuccess(false);
     // Before we navigate away, determine the page and complete any
     // necessary actions.
 
-    //TODO: If username page, check if user already exists.
+    if (pageRoute === PageRoutes.UsernamePage && pageIsValid) {
+      //TODO: If username page, check if user already exists.
+      setSuccess(true);
+    }
 
+    // If user exists and has completed their sign in, redirect to login
+    // If user exists but needs to complete their sign up - acknowledge ??
     if (pageRoute === PageRoutes.PasswordPage && pageIsValid) {
-      await saveNewUser();
-      // TODO: save ID to Redux - user slice.
-      //console.log("Data = ", data.data);
-      console.log(
-        "Finished saving user and result is: ",
-        JSON.stringify(savedUser)
-      );
+      try {
+        const response = await postUser(newUser);
+        //savedUser.email = newUser.email;
+        const jsonUser = JSON.parse(JSON.stringify(response)).user;
+        console.log(
+          `SignUpPage onNext - jsonData = ${JSON.stringify(jsonUser)}`
+        );
+        // TODO: improve this message:
+        alert(`Your details have been saved. 
+        You are free to either continue or return and complete at a later date. 
+        To continue at a later date, please revisit the sign up form and enter your email and password`);
+
+        storeUserData(jsonUser);
+        setSuccess(true);
+      } catch (err) {
+        setSuccess(false);
+        console.log(`Error with postUser call, success var = ${success}`);
+        if (axios.isAxiosError(err)) {
+          console.log(err.toJSON());
+          if (!err.response) {
+            setErrorMessage("User creation failed - No server response");
+          } else if (err.response?.status === 400) {
+            setErrorMessage(`User creation failed - ${err.message}`);
+          } else if (err.response?.status !== 201) {
+            setErrorMessage(
+              `Status not equal to 201. Status = ${err.response?.status}`
+            );
+          } else {
+            setErrorMessage("Login failed");
+          }
+        } else {
+          console.log(err);
+          setErrorMessage("Login failed - ");
+        }
+      }
     }
     // TODO: for later pages, update user in DB
 
-    navigate(PageRouteArray[pageNum + 1]);
+    if (success) {
+      navigate(PageRouteArray[pageNum + 1]);
+    }
   };
 
   return (
@@ -132,6 +159,14 @@ const SignUpPage = (): React.JSX.Element => {
         {/* Display inner pages here */}
         <Outlet />
       </div>
+
+      <p
+        // ref={errorRef}
+        className="error-messsage"
+        aria-live="assertive"
+      >
+        {errorMessage}
+      </p>
 
       {/* Buttons are controlled here, rather than on the individual pages */}
       <div className="button-row">
