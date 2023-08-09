@@ -1,4 +1,5 @@
-import axios, { AxiosResponse } from "axios";
+// import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 
 import { NewUser, User } from "../types/services";
 
@@ -33,32 +34,37 @@ export const loginUser = async (userData: NewUser) => {
 
 // Add a new user to the DB (username and password)
 export const postUser = async (userData: NewUser) => {
-  try {
-    const { data } = await axios.post<string>(
-      `${BASE_URL}/users`,
-      JSON.stringify(userData),
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-
-    // TODO: Remove test code
-    // console.log(JSON.stringify(data, null, 4));
-
-    return JSON.parse(data); // Should data be returned as raw?
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      console.log("postUser - error message: ", error.message);
-      // return error.message;
-      return error.message;
-    } else {
-      console.log("postUser - unexpected error: ", error);
-      // return "An unexpected error occurred";
-      return "An unexpected error occured";
+  // try {
+  // As a new user, signify that they still need to
+  // complete the sign up process
+  const jsonBody = { ...userData, signUpComplete: false };
+  console.log(`JsonBody for postUser = ${JSON.stringify(jsonBody)}`);
+  const { data } = await axios.post<string>(
+    `${BASE_URL}/users`,
+    //JSON.stringify(userData),
+    JSON.stringify(jsonBody),
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
     }
-  }
+  );
+
+  // TODO: Remove test code
+  // console.log(JSON.stringify(data, null, 4));
+
+  return data; // Should data be returned as raw?
+  // } catch (error) {
+  //   if (axios.isAxiosError(error)) {
+  //     console.log("postUser - error message: ", error.message);
+  //     // return error.message;
+  //     return error.message;
+  //   } else {
+  //     console.log("postUser - unexpected error: ", error);
+  //     // return "An unexpected error occurred";
+  //     return "An unexpected error occured";
+  //   }
+  // }
 };
 
 // Get all users from DB
