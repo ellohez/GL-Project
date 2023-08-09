@@ -67,6 +67,26 @@ export const postUser = async (userData: NewUser) => {
   // }
 };
 
+// Search DB by email to check if user already exists
+export const getUserByEmail = async (email: string) => {
+  // try {
+  const { data } = await axios.get<string>(`${BASE_URL}/users?email=${email}`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return data;
+  // } catch (error) {
+  //   if (axios.isAxiosError(error)) {
+  //     console.log("getUserById - error message: ", error.message);
+  //     return error.message;
+  //   } else {
+  //     console.log("getUserById - unexpected error: ", error);
+  //     return "An unexpected error occurred";
+  //   }
+  // }
+};
+
 // Get all users from DB
 export const getUsers = async () => {
   try {
@@ -99,29 +119,6 @@ export const getUserById = async (userId: number) => {
       },
     });
     return data;
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      console.log("getUserById - error message: ", error.message);
-      return error.message;
-    } else {
-      console.log("getUserById - unexpected error: ", error);
-      return "An unexpected error occurred";
-    }
-  }
-};
-
-// Search DB by username
-export const getUserByUsername = async (username: string) => {
-  try {
-    const { data } = await axios.get<string>(
-      `${BASE_URL}/users?username=${username}`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    return JSON.parse(data);
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.log("getUserById - error message: ", error.message);
