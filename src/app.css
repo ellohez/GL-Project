@@ -112,7 +112,8 @@ label {
   padding: 0.2em;
 }
 
-form {
+form,
+.outer-form {
   background-color: var(--primary-color);
   padding: 0.2em;
 }
