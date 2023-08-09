@@ -3,13 +3,14 @@ import React, { useEffect, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
 import { PageRouteArray, PageRoutes } from "../../router";
-import { postUser } from "../../services/users";
+import { getUserByEmail, postUser } from "../../services/users";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { selectEmail, selectPassword } from "../../store/newUser/selectors";
 import { selectIsValid } from "../../store/signUpPages/selectors";
 import { setSignUpComplete, setUserId } from "../../store/user/userSlice";
 import { NewUser } from "../../types/services";
 import BreadcrumbTrail from "../common/BreadcrumbTrail";
+import RedirectionModal from "../common/RedirectionModal";
 import "./styles.css";
 
 // Used for Breadcrumb component - readable titles
@@ -25,6 +26,9 @@ const SignUpPage = (): React.JSX.Element => {
   const dispatch = useAppDispatch();
   const [errorMessage, setErrorMessage] = useState("");
   const [success, setSuccess] = useState(false);
+  // Used to trigger the RedirectionalModal appearance if user needs to
+  // complete the sign up procedure to continue.
+  const [redirect, setRedirect] = useState(false);
   // Calculate the current page from the URL section
   const pathname = useLocation().pathname;
   const currentPath = pathname.replace("/sign-up/", "");
@@ -91,9 +95,51 @@ const SignUpPage = (): React.JSX.Element => {
     // Before we navigate away, determine the page and complete any
     // necessary actions.
 
-    if (pageRoute === PageRoutes.UsernamePage && pageIsValid) {
-      //TODO: If username page, check if user already exists.
+    if (pageRoute === PageRoutes.SignUpPage) {
       setSuccess(true);
+    }
+    if (pageRoute === PageRoutes.UsernamePage && pageIsValid) {
+      // If username page, check if user already exists.
+      try {
+        const response = await getUserByEmail(newUser.email);
+        console.log(
+          `SignUpPage - getUserByEmail, email: ${
+            newUser.email
+          } response: ${JSON.stringify(response)}`
+        );
+        if (response[0]) {
+          const jsonUser = JSON.parse(JSON.stringify(response[0]));
+          setSuccess(true);
+          if (jsonUser.email === newUser.email) {
+            console.log(`User exists - emails match`);
+            if (jsonUser.signUpComplete) {
+              setRedirect(true);
+            }
+            // Following pages need to understand that user already exists.
+            storeUserData(jsonUser);
+          }
+        }
+      } catch (err) {
+        setSuccess(false);
+        console.log("SignUpPage - Error with getUserByEmail call");
+        if (axios.isAxiosError(err)) {
+          console.log(err.toJSON());
+          if (!err.response) {
+            setErrorMessage("Existing user check failed - No server response");
+          } else if (err.response?.status === 400) {
+            setErrorMessage(`Existing user check failed - user does not exist`);
+          } else if (err.response?.status !== 200) {
+            setErrorMessage(
+              `Status not equal to 200. Status = ${err.response?.status}`
+            );
+          } else {
+            setErrorMessage("Login failed");
+          }
+        } else {
+          console.log(err);
+          setErrorMessage("Login failed - ");
+        }
+      }
     }
 
     // If user exists and has completed their sign in, redirect to login
@@ -144,6 +190,13 @@ const SignUpPage = (): React.JSX.Element => {
 
   return (
     <main>
+      <RedirectionModal
+        message={
+          "Looks like you are already fully signed up! We will direct you so you can log in."
+        }
+        redirectLink={`/${PageRoutes.LogInPage}`}
+        trigger={redirect}
+      />
       <hr aria-hidden="true" />
       <div className="title">
         <h1>Sign up for our services</h1>
@@ -158,15 +211,15 @@ const SignUpPage = (): React.JSX.Element => {
       <div className="main-container">
         {/* Display inner pages here */}
         <Outlet />
+        {/* Error message output */}
+        <p
+          // ref={errorRef}
+          className="error-messsage"
+          aria-live="assertive"
+        >
+          {errorMessage}
+        </p>
       </div>
-
-      <p
-        // ref={errorRef}
-        className="error-messsage"
-        aria-live="assertive"
-      >
-        {errorMessage}
-      </p>
 
       {/* Buttons are controlled here, rather than on the individual pages */}
       <div className="button-row">
