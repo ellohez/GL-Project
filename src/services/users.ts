@@ -52,11 +52,11 @@ export const postUser = async (userData: NewUser) => {
     if (axios.isAxiosError(error)) {
       console.log("postUser - error message: ", error.message);
       // return error.message;
-      throw error.message;
+      return error.message;
     } else {
       console.log("postUser - unexpected error: ", error);
       // return "An unexpected error occurred";
-      throw "An unexpected error occured";
+      return "An unexpected error occured";
     }
   }
 };
