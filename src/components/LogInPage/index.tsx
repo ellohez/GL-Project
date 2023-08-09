@@ -9,7 +9,7 @@ const LogInPage = () => {
     <main>
       <LogInForm />
 
-      <h1>Hello {userName}</h1>
+      <h1>Hello {userName ? userName : ""}</h1>
     </main>
   );
 };
