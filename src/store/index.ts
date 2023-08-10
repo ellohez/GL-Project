@@ -6,6 +6,8 @@ import { configureStore } from "@reduxjs/toolkit";
 // eslint-disable-next-line @typescript-eslint/no-restricted-imports
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 
+import { authApiSlice } from "../services/authAPI";
+import { usersApiSlice } from "../services/usersAPI";
 import newUserReducer from "./newUser/newUserSlice";
 import signUpPagesReducer from "./signUpPages/signUpPagesSlice";
 import userReducer from "./user/userSlice";
@@ -19,7 +21,13 @@ export const createStore = (preloadedState = {}) =>
       user: userReducer,
       newUser: newUserReducer,
       signUpPages: signUpPagesReducer,
+      [usersApiSlice.reducerPath]: usersApiSlice.reducer,
+      [authApiSlice.reducerPath]: authApiSlice.reducer,
     },
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware()
+        .concat(usersApiSlice.middleware)
+        .concat(authApiSlice.middleware),
   });
 
 export const store = createStore();

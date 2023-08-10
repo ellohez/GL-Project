@@ -1,19 +1,28 @@
 {
   "users": [
     {
-      "username": "user-1email@hotmail.com",
-      "password": "yetAn0th3rPswd",
-      "id": 0
-    },
-    {
-      "username": "sendmemail@blag.com",
-      "password": "0n3Mr3Passw0rd",
+      "email": "spoofuser@live.co.uk",
+      "password": "$2a$10$0kygylJoUG85v4IsV7jQNuBJt9C6wVPY.jcw3YCf/o31gJl2/DFnC",
+      "firstName": "Bob",
+      "surname": "Cratchitt",
+      "DOB": "1999-09-01",
+      "signUpComplete": true,
       "id": 1
     },
     {
-      "username": "spoofuser@live.co.uk",
-      "password": "thisIsaCrapPswd",
+      "email": "user1email@hotmail.com",
+      "password": "$2a$10$zpROYqg.9D8QQsn20rWJhu8A7pN9Bn08EZwPz2XniaLgLO8IS0576",
+      "firstName": "Sandy",
+      "surname": "Shore",
+      "DOB": "1980-08-01",
+      "signUpComplete": true,
       "id": 2
+    },
+    {
+      "email": "sendmemail@blag.com",
+      "password": "$2a$10$sai2ITYXtovQ.TdH.pTNy.xlSje5mZv4AK6IGngbdY9XVAKPRe2L2",
+      "signUpComplete": false,
+      "id": 3
     }
   ],
   "sessions": [

@@ -1,41 +1,93 @@
+// import axios, { AxiosResponse } from "axios";
 import axios from "axios";
 
-export interface User {
-  username: string;
-  password: string;
-  id: number;
-}
+import { NewUser, User } from "../types/services";
 
-export interface NewUser {
-  username: string;
-  password: string;
-}
+export const BASE_URL = `http://localhost:3333`;
+// const responseBody = (response: AxiosResponse) => response.data;
 
-const BASE_URL = `http://localhost:3333`;
-
-export const postUser = async (userData: NewUser) => {
-  try {
-    const { data } = await axios.post<User>(`${BASE_URL}/users`, userData, {
+// Add a new user to the DB (username and password)
+export const loginUser = async (userData: NewUser) => {
+  // try {
+  const { data } = await axios.post<string>(
+    `${BASE_URL}/login`,
+    JSON.stringify(userData),
+    {
       headers: {
         "Content-Type": "application/json",
       },
-    });
-
-    // TODO: Remove test code
-    // console.log(JSON.stringify(data, null, 4));
-
-    return data;
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      console.log("postUser - error message: ", error.message);
-      return error.message;
-    } else {
-      console.log("postUser - unexpected error: ", error);
-      return "An unexpected error occurred";
     }
-  }
+  );
+  return data;
+  // } catch (error) {
+  //   if (axios.isAxiosError(error)) {
+  //     //console.log("postUser - error message: ", error.message);
+  //     // return error.message;
+  //     throw new Error(error);
+  //   } else {
+  //     //console.log("postUser - unexpected error: ", error);
+  //     // return "An unexpected error occurred";
+  //     throw "An unexpected error occured";
+  //   }
+  // }
 };
 
+// Add a new user to the DB (username and password)
+export const postUser = async (userData: NewUser) => {
+  // try {
+  // As a new user, signify that they still need to
+  // complete the sign up process
+  const jsonBody = { ...userData, signUpComplete: false };
+  console.log(`JsonBody for postUser = ${JSON.stringify(jsonBody)}`);
+  const { data } = await axios.post<string>(
+    `${BASE_URL}/users`,
+    //JSON.stringify(userData),
+    JSON.stringify(jsonBody),
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  // TODO: Remove test code
+  // console.log(JSON.stringify(data, null, 4));
+
+  return data; // Should data be returned as raw?
+  // } catch (error) {
+  //   if (axios.isAxiosError(error)) {
+  //     console.log("postUser - error message: ", error.message);
+  //     // return error.message;
+  //     return error.message;
+  //   } else {
+  //     console.log("postUser - unexpected error: ", error);
+  //     // return "An unexpected error occurred";
+  //     return "An unexpected error occured";
+  //   }
+  // }
+};
+
+// Search DB by email to check if user already exists
+export const getUserByEmail = async (email: string) => {
+  // try {
+  const { data } = await axios.get<string>(`${BASE_URL}/users?email=${email}`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return data;
+  // } catch (error) {
+  //   if (axios.isAxiosError(error)) {
+  //     console.log("getUserById - error message: ", error.message);
+  //     return error.message;
+  //   } else {
+  //     console.log("getUserById - unexpected error: ", error);
+  //     return "An unexpected error occurred";
+  //   }
+  // }
+};
+
+// Get all users from DB
 export const getUsers = async () => {
   try {
     const { data } = await axios.get<User[]>(`${BASE_URL}/users`, {
@@ -58,7 +110,8 @@ export const getUsers = async () => {
   }
 };
 
-export const getUser = async (userId: number) => {
+// Get a particular user by their ID number
+export const getUserById = async (userId: number) => {
   try {
     const { data } = await axios.get<User>(`${BASE_URL}/users/${userId}`, {
       headers: {
@@ -68,10 +121,10 @@ export const getUser = async (userId: number) => {
     return data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      console.log("getUser - error message: ", error.message);
+      console.log("getUserById - error message: ", error.message);
       return error.message;
     } else {
-      console.log("getUser - unexpected error: ", error);
+      console.log("getUserById - unexpected error: ", error);
       return "An unexpected error occurred";
     }
   }

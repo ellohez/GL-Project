@@ -6,12 +6,26 @@ const userSlice = createSlice({
   name: "user",
   initialState: createInitialUserState,
   reducers: {
-    setUserName(state, action: PayloadAction<string>) {
-      state.name = action.payload;
+    setUserFirstName(state, action: PayloadAction<string>) {
+      state.firstName = action.payload;
+    },
+    setUserLastName(state, action: PayloadAction<string>) {
+      state.lastName = action.payload;
+    },
+    setUserId(state, action: PayloadAction<number>) {
+      state.id = action.payload;
+    },
+    setSignUpComplete(state, action: PayloadAction<boolean>) {
+      state.signUpComplete = action.payload;
     },
   },
 });
 
-export const { setUserName } = userSlice.actions;
+export const {
+  setUserFirstName,
+  setUserLastName,
+  setSignUpComplete,
+  setUserId,
+} = userSlice.actions;
 
 export default userSlice.reducer;

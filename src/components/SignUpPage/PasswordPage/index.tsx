@@ -1,6 +1,8 @@
-import { isUndefined } from "lodash";
+import axios from "axios";
+import { divide, isUndefined } from "lodash";
 import React, { useEffect, useRef, useState } from "react";
 
+import { loginUser } from "../../../services/users";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import {
   setConfirmPassword,
@@ -8,6 +10,7 @@ import {
 } from "../../../store/newUser/newUserSlice";
 import {
   selectConfirmPassword,
+  selectEmail,
   selectPassword,
 } from "../../../store/newUser/selectors";
 import {
@@ -21,6 +24,7 @@ import {
   setValidFalse,
   setValidTrue,
 } from "../../../store/signUpPages/signUpPagesSlice";
+import { selectUserId } from "../../../store/user/selectors";
 import ValidationChecklist from "../../common/ValidationChecklist";
 
 const PasswordPage = ({ id }: { id: string }): React.JSX.Element => {
@@ -36,11 +40,16 @@ const PasswordPage = ({ id }: { id: string }): React.JSX.Element => {
   // Selector hook for Redux store (getter)
   const password = useAppSelector(selectPassword);
   const passwordConfirm = useAppSelector(selectConfirmPassword);
+  const userEmail = useAppSelector(selectEmail);
+
   const isValid: boolean = useAppSelector(selectIsValid(id));
+  const userId = useAppSelector(selectUserId);
   // Password visibility toggle states
   const [pwdIsVisible, setPwdIsVisible] = useState(false);
   const [confirmPwdIsVisible, setConfirmPwdIsVisible] = useState(false);
-  // get the Redux  dispatch hook to call actions
+  const [errorMessage, setErrorMessage] = useState("");
+  const errorRef = useRef<HTMLParagraphElement>(null);
+  // get the Redux dispatch hook to call actions
   const dispatch = useAppDispatch();
 
   const passwordInputRef = useRef<HTMLInputElement>(null);
@@ -75,8 +84,6 @@ const PasswordPage = ({ id }: { id: string }): React.JSX.Element => {
   }, [ValidationText, dispatch, id, messages.length]);
 
   const validatePassword = () => {
-    // TODO: Validate for each stage - follow usernamePage example.
-    // Can the password checklist npm github help? - steal regex?
     dispatch(resetMessages(id));
     dispatch(setValidFalse(id));
     // Note: No global flags required, just need to find one uppercase character,
@@ -85,6 +92,7 @@ const PasswordPage = ({ id }: { id: string }): React.JSX.Element => {
     const uppercaseCharRegex = new RegExp("[A-Z]");
     const numberRegex = new RegExp("[0-9]");
 
+    // Validate for each stage
     const specialCharTest = specialCharRegex.test(password);
     const minCharTest = password.length >= 8;
     const maxCharTest = password.length <= 15;
@@ -155,14 +163,53 @@ const PasswordPage = ({ id }: { id: string }): React.JSX.Element => {
         passwordInputRef.current?.value ?? ""
       )
     );
-    dispatch(
-      setConfirmPassword(
-        passwordConfirmInputRef.current === null
-          ? ""
-          : passwordConfirmInputRef.current.value
-      )
-    );
+    dispatch(setConfirmPassword(passwordConfirmInputRef.current?.value ?? ""));
     validatePassword();
+
+    if (userId > -1 && isValid) {
+      // User already exists and must have an uncompleted sign up
+      // (otherwise they would have been redirected to log in)
+      // Login user to validate password
+      testAgainstExistingPassword();
+    }
+  };
+
+  const testAgainstExistingPassword = async () => {
+    // Until we test against user's password, assume invalid
+    dispatch(setValidFalse);
+    try {
+      const response = await loginUser({
+        email: userEmail.toLowerCase(),
+        password: password,
+      });
+
+      dispatch(setValidTrue);
+      setErrorMessage("User account retrieved - please continue your sign up");
+      const jsonUser = JSON.parse(JSON.stringify(response)).user;
+      if (userEmail.toLowerCase() !== jsonUser.email) {
+        throw Error("Emails do not match");
+      }
+    } catch (err) {
+      console.log(`Password page - error with loginUser`);
+      errorRef.current?.focus();
+      if (axios.isAxiosError(err)) {
+        console.log(err.toJSON());
+        if (!err.response) {
+          setErrorMessage("Login failed - No server response");
+        } else if (err.response?.status === 400) {
+          setErrorMessage(`Login failed - incorrect email or password`);
+        } else if (err.response?.status !== 200) {
+          setErrorMessage(
+            `Status not equal to 200. Status = ${err.response?.status}`
+          );
+        } else {
+          setErrorMessage("Login failed");
+        }
+      } else {
+        console.log(err);
+        setErrorMessage(`Login failed - ${err}`);
+      }
+    }
   };
 
   return (
@@ -227,64 +274,80 @@ const PasswordPage = ({ id }: { id: string }): React.JSX.Element => {
             onKeyUp={inputUpdated}
             onPaste={inputUpdated}
           />
-          {/* <span className="help-label" id="pwd-desc">
-            Passwords must be between 8 and 15 characters and include uppercase
-            and lowercase letters and a number
-          </span> */}
-          <label
-            className="help-label"
-            htmlFor="password-confirm"
-            id="pwd-confirm-label"
-          >
-            Please re-type your new password to confirm:
-          </label>
-          {/* Toggle between password visibility */}
-          <div className="checkbox-combo" id="password-combo">
-            <input
-              id="pwdConfirmCheckbox"
-              name="pwdConfirmCheckbox"
-              type="checkbox"
-              checked={confirmPwdIsVisible}
-              // aria-labelledby="pwdConfirmCheckboxLabel"
-              // aria-checked={confirmPwdIsVisible}
-              onChange={() => {
-                setConfirmPwdIsVisible(
-                  (confirmPwdIsVisible) => !confirmPwdIsVisible
-                );
-              }}
-            />
+
+          {/* {userId < 0 ? */}
+          <div className="password-confirm">
             <label
-              className="checkbox-label"
-              htmlFor="pwdConfirmCheckbox"
-              id="pwdConfirmCheckboxLabel"
+              className="help-label"
+              htmlFor="password-confirm"
+              id="pwd-confirm-label"
             >
-              Show confirm password?
+              Please re-type your new password to confirm:
             </label>
+
+            {/* Toggle between password visibility */}
+            <div className="checkbox-combo" id="password-confirm-combo">
+              <input
+                id="pwdConfirmCheckbox"
+                name="pwdConfirmCheckbox"
+                type="checkbox"
+                checked={confirmPwdIsVisible}
+                // aria-labelledby="pwdConfirmCheckboxLabel"
+                // aria-checked={confirmPwdIsVisible}
+                // Confirm password not needed if user has a saved
+                // but incomplete sign up
+                // disabled={userId > -1}
+                onChange={() => {
+                  setConfirmPwdIsVisible(
+                    (confirmPwdIsVisible) => !confirmPwdIsVisible
+                  );
+                }}
+              />
+              <label
+                className="checkbox-label"
+                htmlFor="pwdConfirmCheckbox"
+                id="pwdConfirmCheckboxLabel"
+              >
+                Show confirm password?
+              </label>
+            </div>
+            <input
+              className="block-input"
+              name="password-confirm"
+              id="password-confirm"
+              type={confirmPwdIsVisible ? "text" : "password"}
+              autoComplete="new-password"
+              aria-labelledby="pwd-confirm-label"
+              aria-required="true"
+              // disabled={userId > -1}
+              aria-invalid={!isValid}
+              value={passwordConfirm}
+              aria-errormessage={isValid ? "" : "validation-checklist"}
+              aria-details={isValid ? "validation-checklist" : ""}
+              // Lots of events handled to avoid issue with use of
+              // autofill on browser not triggering onChange
+              onBlur={inputUpdated}
+              onChange={inputUpdated}
+              onInput={inputUpdated}
+              onKeyDown={inputUpdated}
+              onKeyUp={inputUpdated}
+              onPaste={inputUpdated}
+              ref={passwordConfirmInputRef}
+            />
           </div>
-          <input
-            className="block-input"
-            name="password-confirm"
-            id="password-confirm"
-            type={confirmPwdIsVisible ? "text" : "password"}
-            autoComplete="new-password"
-            aria-labelledby="pwd-confirm-label"
-            aria-required="true"
-            aria-invalid={!isValid}
-            value={passwordConfirm}
-            aria-errormessage={isValid ? "" : "validation-checklist"}
-            aria-details={isValid ? "validation-checklist" : ""}
-            // Lots of events handled to avoid issue with use of
-            // autofill on browser not triggering onChange
-            onBlur={inputUpdated}
-            onChange={inputUpdated}
-            onInput={inputUpdated}
-            onKeyDown={inputUpdated}
-            onKeyUp={inputUpdated}
-            onPaste={inputUpdated}
-            ref={passwordConfirmInputRef}
-          />
+          {/* :
+            <div></div>} */}
+
           {/* Permanently show the error/success messages to give user consistent feedback */}
           <ValidationChecklist messageArray={messages} />
+
+          <p
+            ref={errorRef}
+            className={errorMessage ? "errmsg" : "offscreen"}
+            aria-live="assertive"
+          >
+            {errorMessage}
+          </p>
         </fieldset>
       </form>
     </section>

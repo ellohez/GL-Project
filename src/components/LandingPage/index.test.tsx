@@ -8,7 +8,7 @@ describe("Landing Page", () => {
     it("renders how we'd expect", () => {
       renderComponent(<LandingPage />);
 
-      expect(screen.getByText("Hello, world! (h1)")).toBeInTheDocument();
+      expect(screen.getByText("Welcome! (h1)")).toBeInTheDocument();
       expect(screen.getByText("These headings... (h2)")).toBeInTheDocument();
       expect(
         screen.getByText("...are here to enable... (h3)")
