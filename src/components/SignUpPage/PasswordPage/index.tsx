@@ -1,5 +1,5 @@
 import axios from "axios";
-import { divide, isUndefined } from "lodash";
+import { isUndefined } from "lodash";
 import React, { useEffect, useRef, useState } from "react";
 
 import { loginUser } from "../../../services/users";
