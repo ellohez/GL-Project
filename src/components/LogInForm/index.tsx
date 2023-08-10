@@ -61,24 +61,25 @@ export const LogInForm = () => {
       setErrorMessage("Login Successful");
       storeUserDetails(JSON.stringify(response));
       setFormData({ email: "", password: "" });
-    } catch (error) {
+    } catch (err) {
       console.log("Error with loginUser call");
-      if (axios.isAxiosError(error)) {
-        console.log(error.toJSON());
-        if (!error.response) {
+      errorRef.current?.focus();
+      if (axios.isAxiosError(err)) {
+        console.log(err.toJSON());
+        if (!err.response) {
           setErrorMessage("Login failed - No server response");
-        } else if (error.response?.status === 400) {
+        } else if (err.response?.status === 400) {
           setErrorMessage(`Login failed - user does not exist`);
-        } else if (error.response?.status !== 200) {
+        } else if (err.response?.status !== 200) {
           setErrorMessage(
-            `Status not equal to 200. Status = ${error.response?.status}`
+            `Status not equal to 200. Status = ${err.response?.status}`
           );
         } else {
           setErrorMessage("Login failed");
         }
       } else {
-        console.log(error);
-        setErrorMessage("Login failed - ");
+        console.log(err);
+        setErrorMessage(`Login failed - ${err}`);
       }
     }
   };
