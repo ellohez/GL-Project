@@ -43,11 +43,11 @@ header {
 }
 main {
   /* Background */
-  /* background-color: var(--secondary-color); */
   background-image: url("./assets/circult_board_busy.jpeg");
   background-repeat: repeat;
-  /* opacity: 0.1; */
   width: 100%;
+  /* Make the main taller */
+  min-height: 100vh;
 }
 body {
   background-color: var(--primary-color);
