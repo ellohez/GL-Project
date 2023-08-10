@@ -1,6 +1,6 @@
 import React from "react";
 
-const AddressPage = ({ id }: { id: string }) => {
+const FullNamePage = ({ id }: { id: string }) => {
   return (
     <section>
       <div>
@@ -36,4 +36,4 @@ const AddressPage = ({ id }: { id: string }) => {
   );
 };
 
-export default AddressPage;
+export default FullNamePage;
