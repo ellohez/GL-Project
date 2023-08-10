@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
 import { PageRouteArray, PageRoutes } from "../../router";
@@ -7,6 +7,7 @@ import { getUserByEmail, postUser } from "../../services/users";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { selectEmail, selectPassword } from "../../store/newUser/selectors";
 import { selectIsValid } from "../../store/signUpPages/selectors";
+import { selectUserId } from "../../store/user/selectors";
 import { setSignUpComplete, setUserId } from "../../store/user/userSlice";
 import { NewUser } from "../../types/services";
 import BreadcrumbTrail from "../common/BreadcrumbTrail";
@@ -26,6 +27,8 @@ const SignUpPage = (): React.JSX.Element => {
   const dispatch = useAppDispatch();
   const [errorMessage, setErrorMessage] = useState("");
   const [success, setSuccess] = useState(false);
+  const errorRef = useRef<HTMLParagraphElement>(null);
+  const userId = useAppSelector(selectUserId);
   // Used to trigger the RedirectionalModal appearance if user needs to
   // complete the sign up procedure to continue.
   const [redirect, setRedirect] = useState(false);
@@ -92,6 +95,7 @@ const SignUpPage = (): React.JSX.Element => {
   // Handle next button click for all sub pages
   const onNext = async () => {
     setSuccess(false);
+
     // Before we navigate away, determine the page and complete any
     // necessary actions.
 
@@ -110,17 +114,22 @@ const SignUpPage = (): React.JSX.Element => {
         if (response[0]) {
           const jsonUser = JSON.parse(JSON.stringify(response[0]));
           setSuccess(true);
+          // User exists
           if (jsonUser.email === newUser.email) {
             console.log(`User exists - emails match`);
+            // If user has a complete sign up, redirect them to log in
             if (jsonUser.signUpComplete) {
               setRedirect(true);
+              return;
             }
             // Following pages need to understand that user already exists.
+            // And has an incomplete sign up - as not redirected to log in.
             storeUserData(jsonUser);
           }
         }
       } catch (err) {
         setSuccess(false);
+        errorRef.current?.focus();
         console.log("SignUpPage - Error with getUserByEmail call");
         if (axios.isAxiosError(err)) {
           console.log(err.toJSON());
@@ -142,9 +151,9 @@ const SignUpPage = (): React.JSX.Element => {
       }
     }
 
-    // If user exists and has completed their sign in, redirect to login
-    // If user exists but needs to complete their sign up - acknowledge ??
-    if (pageRoute === PageRoutes.PasswordPage && pageIsValid) {
+    // If not an existing user who needs to complete their sign up
+    // at this point we need to save as new user.
+    if (pageRoute === PageRoutes.PasswordPage && pageIsValid && userId < 0) {
       try {
         const response = await postUser(newUser);
         //savedUser.email = newUser.email;
@@ -161,6 +170,7 @@ const SignUpPage = (): React.JSX.Element => {
         setSuccess(true);
       } catch (err) {
         setSuccess(false);
+        errorRef.current?.focus();
         console.log(`Error with postUser call, success var = ${success}`);
         if (axios.isAxiosError(err)) {
           console.log(err.toJSON());
@@ -212,11 +222,7 @@ const SignUpPage = (): React.JSX.Element => {
         {/* Display inner pages here */}
         <Outlet />
         {/* Error message output */}
-        <p
-          // ref={errorRef}
-          className="error-messsage"
-          aria-live="assertive"
-        >
+        <p ref={errorRef} className="error-messsage" aria-live="assertive">
           {errorMessage}
         </p>
       </div>
