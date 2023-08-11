@@ -1,6 +1,8 @@
 import axios from "axios";
-import React, { useEffect, useRef, useState } from "react";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import React, { MouseEventHandler, useEffect, useRef, useState } from "react";
+// import RedirectionModal from "../common/RedirectionModal";
+import Modal from "react-modal";
+import { Outlet, redirect, useLocation, useNavigate } from "react-router-dom";
 
 import { PageRouteArray, PageRoutes } from "../../router";
 import { getUserByEmail, postUser } from "../../services/users";
@@ -11,7 +13,6 @@ import { selectUserId } from "../../store/user/selectors";
 import { setSignUpComplete, setUserId } from "../../store/user/userSlice";
 import { NewUser } from "../../types/services";
 import BreadcrumbTrail from "../common/BreadcrumbTrail";
-import RedirectionModal from "../common/RedirectionModal";
 import "./styles.css";
 
 // Used for Breadcrumb component - readable titles
@@ -22,6 +23,24 @@ export const formTitles: Array<string> = [
   "Full Name",
 ];
 
+// TODO: Move this to a more central location
+export const customModalStyles = {
+  content: {
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+    // backgroundColor: "var(--gray-shadow-rgba)",
+    display: "inline-grid",
+    columnCount: "2",
+    justifyItems: "center",
+    borderStyle: "solid",
+    borderColor: "var(--secondary-color)",
+  },
+};
+
 const SignUpPage = (): React.JSX.Element => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -29,9 +48,9 @@ const SignUpPage = (): React.JSX.Element => {
   const [success, setSuccess] = useState(false);
   const errorRef = useRef<HTMLParagraphElement>(null);
   const userId = useAppSelector(selectUserId);
-  // Used to trigger the RedirectionalModal appearance if user needs to
+  // Used to trigger the modal appearance if user needs to
   // complete the sign up procedure to continue.
-  const [redirect, setRedirect] = useState(false);
+  const [redirectModalIsOpen, setRedirectModalIsOpen] = useState(false);
   // Calculate the current page from the URL section
   const pathname = useLocation().pathname;
   const currentPath = pathname.replace("/sign-up/", "");
@@ -119,7 +138,7 @@ const SignUpPage = (): React.JSX.Element => {
             console.log(`User exists - emails match`);
             // If user has a complete sign up, redirect them to log in
             if (jsonUser.signUpComplete) {
-              setRedirect(true);
+              setRedirectModalIsOpen(true);
               return;
             }
             // Following pages need to understand that user already exists.
@@ -198,57 +217,74 @@ const SignUpPage = (): React.JSX.Element => {
     }
   };
 
+  const closeTestModal: MouseEventHandler<HTMLButtonElement> = (e) => {
+    setRedirectModalIsOpen(false);
+    // TODO: Would returning 'redirect' be better here??
+    navigate(`/${PageRoutes.LogInPage}`);
+  };
+
   return (
-    <main>
-      <RedirectionModal
-        message={
-          "Looks like you are already fully signed up! We will direct you so you can log in."
-        }
-        redirectLink={`/${PageRoutes.LogInPage}`}
-        trigger={redirect}
-      />
-      <hr aria-hidden="true" />
-      <div className="title">
-        <h1>Sign up for our services</h1>
-      </div>
-      {/* TODO: Add CSS padding to make the <br> tags unneccesary? */}
-      <br />
-      {/* Draw breadcrumb trail, showing where the user is up to */}
-      <BreadcrumbTrail currentStep={pageNum} />
-      <br />
-
-      {/* Output the header and page content for the step the user is currently at */}
-      <div className="main-container">
-        {/* Display inner pages here */}
-        <Outlet />
-        {/* Error message output */}
-        <p ref={errorRef} className="error-messsage" aria-live="assertive">
-          {errorMessage}
+    <React.Fragment>
+      <main>
+        <hr aria-hidden="true" />
+        <div className="title">
+          <h1>Sign up for our services</h1>
+        </div>
+        {/* TODO: Add CSS padding to make the <br> tags unneccesary? */}
+        <br />
+        {/* Draw breadcrumb trail, showing where the user is up to */}
+        <BreadcrumbTrail currentStep={pageNum} />
+        <br />
+        {/* Output the header and page content for the step the user is currently at */}
+        <div className="main-container">
+          {/* Display inner pages here */}
+          <Outlet />
+          {/* Error message output */}
+          <p ref={errorRef} className="error-messsage" aria-live="assertive">
+            {errorMessage}
+          </p>
+        </div>
+        {/* Buttons are controlled here, rather than on the individual pages */}
+        <div className="button-row">
+          <button
+            className="form-button h4-style"
+            // Aria-disabled attribute not needed if disabled attribute included
+            disabled={pageNum === 0}
+            // No need to add Aria role of 'button' if button has type='button'
+            type="button"
+            onClick={onPrevious}
+          >
+            Previous
+          </button>
+          <button
+            className="form-button h4-style"
+            type="button"
+            disabled={!pageIsValid}
+            onClick={onNext}
+          >
+            {nextButtonText}
+          </button>
+        </div>
+      </main>
+      <Modal
+        isOpen={redirectModalIsOpen}
+        style={customModalStyles}
+        aria={{
+          labelledby: "title",
+          describedby: "modal-text",
+        }}
+        ariaHideApp={false}
+        appElement={document.getElementById("app") || undefined}
+      >
+        <h5 className="title">Welcome Back</h5>
+        <div className="separator"></div>
+        <p className="modal-text">
+          "Looks like you are already fully signed up! We will direct you so you
+          can log in."
         </p>
-      </div>
-
-      {/* Buttons are controlled here, rather than on the individual pages */}
-      <div className="button-row">
-        <button
-          className="form-button h4-style"
-          // Aria-disabled attribute not needed if disabled attribute included
-          disabled={pageNum === 0}
-          // No need to add Aria role of 'button' if button has type='button'
-          type="button"
-          onClick={onPrevious}
-        >
-          Previous
-        </button>
-        <button
-          className="form-button h4-style"
-          type="button"
-          disabled={!pageIsValid}
-          onClick={onNext}
-        >
-          {nextButtonText}
-        </button>
-      </div>
-    </main>
+        <button onClick={closeTestModal}>Take me there!</button>
+      </Modal>
+    </React.Fragment>
   );
 };
 
