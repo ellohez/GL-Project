@@ -102,11 +102,7 @@ const UsernamePage = ({ id }: { id: string }): React.JSX.Element => {
 
   // When the text is changed inside the input field, update state
   const inputUpdated = () => {
-    dispatch(
-      setEmail(
-        inputEmailRef.current === null ? "" : inputEmailRef.current.value
-      )
-    );
+    dispatch(setEmail(inputEmailRef.current?.value ?? ""));
     validateEmail();
   };
 
@@ -114,7 +110,6 @@ const UsernamePage = ({ id }: { id: string }): React.JSX.Element => {
     <section>
       <div className="header">
         {/* Display the relevant title for the current page */}
-        {/* TODO: Make each page responsible for it's own title */}
         <h2>Username</h2>
       </div>
       {/* Row of helper text, input or similar 

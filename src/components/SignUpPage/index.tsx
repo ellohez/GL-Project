@@ -19,7 +19,7 @@ export const formTitles: Array<string> = [
   "Sign Up - Guidance",
   "Username",
   "Secure your account",
-  "Address",
+  "Full Name",
 ];
 
 const SignUpPage = (): React.JSX.Element => {
@@ -71,7 +71,7 @@ const SignUpPage = (): React.JSX.Element => {
       case PageRoutes.PasswordPage:
         setNextButtonText("Save and Continue");
         break;
-      case lastPage: // PageRoutes.AddressPage:
+      case lastPage: // PageRoutes.FullNamePage:
         setNextButtonText("Submit");
         break;
       default:
