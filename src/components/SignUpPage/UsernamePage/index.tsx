@@ -102,11 +102,7 @@ const UsernamePage = ({ id }: { id: string }): React.JSX.Element => {
 
   // When the text is changed inside the input field, update state
   const inputUpdated = () => {
-    dispatch(
-      setEmail(
-        inputEmailRef.current === null ? "" : inputEmailRef.current.value
-      )
-    );
+    dispatch(setEmail(inputEmailRef.current?.value ?? ""));
     validateEmail();
   };
 
