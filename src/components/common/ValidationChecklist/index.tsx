@@ -4,15 +4,19 @@ import { v4 as uuidv4 } from "uuid";
 import { ValidationMessage } from "../../../store/signUpPages/state";
 import "./styles.css";
 
+interface ChecklistProps {
+  messageArray: ValidationMessage[];
+  trigger?: boolean;
+}
+
 const ValidationChecklist = ({
   messageArray,
-}: {
-  messageArray: Array<ValidationMessage>;
-}): React.JSX.Element => {
-  if (!messageArray.length) {
-    return <div id="validation-checklist"></div>;
-  }
-  return (
+  trigger = true,
+}: ChecklistProps): React.JSX.Element => {
+  //   if (!messageArray.length || !trigger) {
+  //   return <div className="validation-checklist"></div>;
+  // }
+  return trigger && messageArray.length > 0 ? (
     <div
       id="validation-checklist"
       // This will instruct a screen reader to announce the validiation messages
@@ -67,6 +71,8 @@ const ValidationChecklist = ({
         ))}
       </ul>
     </div>
+  ) : (
+    <div className="validation-checklist"></div>
   );
 };
 
