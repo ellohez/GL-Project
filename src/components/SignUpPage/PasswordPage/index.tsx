@@ -44,6 +44,7 @@ const PasswordPage = ({ id }: { id: string }): React.JSX.Element => {
 
   const isValid: boolean = useAppSelector(selectIsValid(id));
   const userId = useAppSelector(selectUserId);
+  const userExists: boolean = userId > -1;
   // Password visibility toggle states
   const [pwdIsVisible, setPwdIsVisible] = useState(false);
   const [confirmPwdIsVisible, setConfirmPwdIsVisible] = useState(false);
@@ -68,7 +69,7 @@ const PasswordPage = ({ id }: { id: string }): React.JSX.Element => {
 
     // On first render, add all error messages to state,
     // as user has not yet entered valid input
-    if (messages?.length === 0) {
+    if (messages?.length === 0 && !userExists) {
       for (const [, vText] of Object.entries(ValidationText)) {
         dispatch(
           addMessage({
@@ -81,7 +82,7 @@ const PasswordPage = ({ id }: { id: string }): React.JSX.Element => {
         );
       }
     }
-  }, [ValidationText, dispatch, id, messages.length]);
+  }, [ValidationText, dispatch, id, messages.length, userExists]);
 
   const validatePassword = () => {
     dispatch(resetMessages(id));
@@ -159,9 +160,13 @@ const PasswordPage = ({ id }: { id: string }): React.JSX.Element => {
   const inputUpdated = () => {
     dispatch(setPassword(passwordInputRef.current?.value ?? ""));
     dispatch(setConfirmPassword(passwordConfirmInputRef.current?.value ?? ""));
-    validatePassword();
 
-    if (userId > -1 && isValid) {
+    // If user doesn't already exist - validate
+    if (!userExists) {
+      validatePassword();
+    } else {
+      // if (userId > -1 && isValid) {/
+
       // User already exists and must have an uncompleted sign up
       // (otherwise they would have been redirected to log in)
       // Login user to validate password
@@ -178,7 +183,7 @@ const PasswordPage = ({ id }: { id: string }): React.JSX.Element => {
         password: password,
       });
 
-      dispatch(setValidTrue);
+      dispatch(setValidTrue(id));
       setErrorMessage("User account retrieved - please continue your sign up");
       const jsonUser = JSON.parse(JSON.stringify(response)).user;
       if (userEmail.toLowerCase() !== jsonUser.email) {
@@ -270,71 +275,72 @@ const PasswordPage = ({ id }: { id: string }): React.JSX.Element => {
             onPaste={inputUpdated}
           />
 
-          {/* {userId < 0 ? */}
-          <div className="password-confirm">
-            <label
-              className="help-label"
-              htmlFor="password-confirm"
-              id="pwd-confirm-label"
-            >
-              Please re-type your new password to confirm:
-            </label>
-
-            {/* Toggle between password visibility */}
-            <div className="checkbox-combo" id="password-confirm-combo">
-              <input
-                id="pwdConfirmCheckbox"
-                name="pwdConfirmCheckbox"
-                type="checkbox"
-                checked={confirmPwdIsVisible}
-                // aria-labelledby="pwdConfirmCheckboxLabel"
-                // aria-checked={confirmPwdIsVisible}
-                // Confirm password not needed if user has a saved
-                // but incomplete sign up
-                // disabled={userId > -1}
-                onChange={() => {
-                  setConfirmPwdIsVisible(
-                    (confirmPwdIsVisible) => !confirmPwdIsVisible
-                  );
-                }}
-              />
+          {!userExists ? (
+            <div className="password-confirm">
               <label
-                className="checkbox-label"
-                htmlFor="pwdConfirmCheckbox"
-                id="pwdConfirmCheckboxLabel"
+                className="help-label"
+                htmlFor="password-confirm"
+                id="pwd-confirm-label"
               >
-                Show confirm password?
+                Please re-type your new password to confirm:
               </label>
+
+              {/* Toggle between password visibility */}
+              <div className="checkbox-combo" id="password-confirm-combo">
+                <input
+                  id="pwdConfirmCheckbox"
+                  name="pwdConfirmCheckbox"
+                  type="checkbox"
+                  checked={confirmPwdIsVisible}
+                  // aria-labelledby="pwdConfirmCheckboxLabel"
+                  // aria-checked={confirmPwdIsVisible}
+                  // Confirm password not needed if user has a saved
+                  // but incomplete sign up
+                  // disabled={userId > -1}
+                  onChange={() => {
+                    setConfirmPwdIsVisible(
+                      (confirmPwdIsVisible) => !confirmPwdIsVisible
+                    );
+                  }}
+                />
+                <label
+                  className="checkbox-label"
+                  htmlFor="pwdConfirmCheckbox"
+                  id="pwdConfirmCheckboxLabel"
+                >
+                  Show confirm password?
+                </label>
+              </div>
+              <input
+                className="block-input"
+                name="password-confirm"
+                id="password-confirm"
+                type={confirmPwdIsVisible ? "text" : "password"}
+                autoComplete="new-password"
+                aria-labelledby="pwd-confirm-label"
+                aria-required="true"
+                // disabled={userId > -1}
+                aria-invalid={!isValid}
+                value={passwordConfirm}
+                aria-errormessage={isValid ? "" : "validation-checklist"}
+                aria-details={isValid ? "validation-checklist" : ""}
+                // Lots of events handled to avoid issue with use of
+                // autofill on browser not triggering onChange
+                onBlur={inputUpdated}
+                onChange={inputUpdated}
+                onInput={inputUpdated}
+                onKeyDown={inputUpdated}
+                onKeyUp={inputUpdated}
+                onPaste={inputUpdated}
+                ref={passwordConfirmInputRef}
+              />
             </div>
-            <input
-              className="block-input"
-              name="password-confirm"
-              id="password-confirm"
-              type={confirmPwdIsVisible ? "text" : "password"}
-              autoComplete="new-password"
-              aria-labelledby="pwd-confirm-label"
-              aria-required="true"
-              // disabled={userId > -1}
-              aria-invalid={!isValid}
-              value={passwordConfirm}
-              aria-errormessage={isValid ? "" : "validation-checklist"}
-              aria-details={isValid ? "validation-checklist" : ""}
-              // Lots of events handled to avoid issue with use of
-              // autofill on browser not triggering onChange
-              onBlur={inputUpdated}
-              onChange={inputUpdated}
-              onInput={inputUpdated}
-              onKeyDown={inputUpdated}
-              onKeyUp={inputUpdated}
-              onPaste={inputUpdated}
-              ref={passwordConfirmInputRef}
-            />
-          </div>
-          {/* :
-            <div></div>} */}
+          ) : (
+            <div></div>
+          )}
 
           {/* Permanently show the error/success messages to give user consistent feedback */}
-          <ValidationChecklist messageArray={messages} />
+          <ValidationChecklist messageArray={messages} trigger={!userExists} />
 
           <p
             ref={errorRef}
