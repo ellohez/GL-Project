@@ -157,12 +157,7 @@ const PasswordPage = ({ id }: { id: string }): React.JSX.Element => {
   };
 
   const inputUpdated = () => {
-    dispatch(
-      setPassword(
-        // passwordInputRef.current === null ? "" : passwordInputRef.current.value
-        passwordInputRef.current?.value ?? ""
-      )
-    );
+    dispatch(setPassword(passwordInputRef.current?.value ?? ""));
     dispatch(setConfirmPassword(passwordConfirmInputRef.current?.value ?? ""));
     validatePassword();
 
