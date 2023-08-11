@@ -1,5 +1,5 @@
 import { isUndefined } from "lodash";
-import { ChangeEventHandler, useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 
 import { useAppDispatch, useAppSelector } from "../../../store";
 import {
@@ -13,20 +13,29 @@ import {
   setValidFalse,
   setValidTrue,
 } from "../../../store/signUpPages/signUpPagesSlice";
+import {
+  selectUserFirstName,
+  selectUserLastName,
+} from "../../../store/user/selectors";
+import {
+  setUserFirstName,
+  setUserLastName,
+} from "../../../store/user/userSlice";
 import ValidationChecklist from "../../common/ValidationChecklist";
 
-const FullNamePage = ({ id }: { id: string }) => {
+const FullNamePage = ({ id }: { id: string }): React.JSX.Element => {
   enum ValidationText {
-    GivenName = "Given name contains non-letters, hyphens or apostrophes",
-    FamilyName = "Family name contains non-letters, hyphens or apostrophes",
+    GivenNameTest = "Given name must contain only letters, spaces, hyphens or apostrophes",
+    FamilyNameTest = "Family name must contain only letters, spaces, hyphens or apostrophes",
   }
 
   const dispatch = useAppDispatch();
   const isValid: boolean = useAppSelector(selectIsValid(id));
-  const [formData, setFormData] = useState({
-    givenName: "",
-    familyName: "",
-  });
+
+  const givenNameRef = useRef<HTMLInputElement>(null);
+  const familyNameRef = useRef<HTMLInputElement>(null);
+  const firstName = useAppSelector(selectUserFirstName);
+  const surname = useAppSelector(selectUserLastName);
 
   let messages = useAppSelector(selectMessages(id));
   if (isUndefined(messages)) {
@@ -61,16 +70,21 @@ const FullNamePage = ({ id }: { id: string }) => {
   const validateNames = () => {
     dispatch(resetMessages(id));
     dispatch(setValidFalse(id));
+
+    // Regex allows letters in any language (e.g. é ü etc)
+    // plus spaces, hyphens and apostrophes.
     const regex = new RegExp(/^[\p{L}\-']+([ \p{L}]+)*$/gmu);
 
-    const givenNameTest = regex.test(formData.givenName);
-    const familyNameTest = regex.test(formData.familyName);
+    const givenNameTest = regex.test(firstName);
+    // Reset the regex to start afresh
+    regex.lastIndex = 0;
+    const familyNameTest = regex.test(surname);
 
     dispatch(
       addMessage({
         message: {
           isError: !givenNameTest,
-          text: ValidationText.GivenName,
+          text: ValidationText.GivenNameTest,
         },
         pageId: id,
       })
@@ -80,7 +94,7 @@ const FullNamePage = ({ id }: { id: string }) => {
       addMessage({
         message: {
           isError: !familyNameTest,
-          text: ValidationText.FamilyName,
+          text: ValidationText.FamilyNameTest,
         },
         pageId: id,
       })
@@ -92,8 +106,10 @@ const FullNamePage = ({ id }: { id: string }) => {
   };
 
   // Store user entered data in state.
-  const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const inputUpdated = () => {
+    // setFormData({ ...formData, [e.target.name]: e.target.value });
+    dispatch(setUserFirstName(givenNameRef.current?.value ?? ""));
+    dispatch(setUserLastName(familyNameRef.current?.value ?? ""));
 
     validateNames();
   };
@@ -123,12 +139,18 @@ const FullNamePage = ({ id }: { id: string }) => {
               autoFocus
               type="text"
               id="given-name"
+              ref={givenNameRef}
               aria-labelledby="given-name-label"
               aria-required="true"
               aria-invalid={!isValid}
               autoComplete="given-name"
-              value={formData.givenName}
-              onInput={handleChange}
+              value={firstName}
+              onBlur={inputUpdated}
+              onChange={inputUpdated}
+              onInput={inputUpdated}
+              onKeyDown={inputUpdated}
+              onKeyUp={inputUpdated}
+              onPaste={inputUpdated}
               required
             />
           </div>
@@ -139,7 +161,7 @@ const FullNamePage = ({ id }: { id: string }) => {
               htmlFor="family-name"
               id="family-namelabel"
             >
-              Please enter your family name (surname):
+              Please enter your family name (last name/surname):
               <span className="required" aria-hidden="true">
                 Required
               </span>
@@ -149,12 +171,18 @@ const FullNamePage = ({ id }: { id: string }) => {
               autoFocus
               type="text"
               id="family-name"
+              ref={familyNameRef}
               aria-labelledby="family-name-label"
               aria-required="true"
               aria-invalid={!isValid}
               autoComplete="family-name"
-              value={formData.familyName}
-              onInput={handleChange}
+              value={surname}
+              onBlur={inputUpdated}
+              onChange={inputUpdated}
+              onInput={inputUpdated}
+              onKeyDown={inputUpdated}
+              onKeyUp={inputUpdated}
+              onPaste={inputUpdated}
               required
             />
           </div>
