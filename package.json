@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "api": "json-server-auth -w data/db.json -p 3333 --delay 1500",
+    "api": "json-server-auth -w data/db.json -p 3333",
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
