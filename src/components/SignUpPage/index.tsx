@@ -30,7 +30,7 @@ const SignUpPage = (): React.JSX.Element => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [errorMessage, setErrorMessage] = useState("");
-  const [userCreated, setUserCreated] = useState(false);
+  const [, setUserCreated] = useState(false);
   const [success, setSuccess] = useState(false);
   const errorRef = useRef<HTMLParagraphElement>(null);
   const userId = useAppSelector(selectUserId);
@@ -279,7 +279,9 @@ const SignUpPage = (): React.JSX.Element => {
           {/* Display inner pages here */}
           <Outlet />
           {/* Error message output */}
-          <div className="solo-error-message">
+          <div
+            className={errorMessage !== "" ? "solo-error-message" : "offscreen"}
+          >
             <p ref={errorRef} aria-live="assertive">
               {errorMessage}
             </p>
