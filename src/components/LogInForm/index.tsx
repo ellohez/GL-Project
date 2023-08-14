@@ -84,7 +84,9 @@ export const LogInForm = () => {
         if (!err.response) {
           setErrorMessage("Login failed - No server response");
         } else if (err.response?.status === 400) {
-          setErrorMessage(`Login failed - user does not exist`);
+          setErrorMessage(
+            `Login failed - unknown email or password, please check and try again`
+          );
         } else if (err.response?.status !== 200) {
           setErrorMessage(
             `Status not equal to 200. Status = ${err.response?.status}`
