@@ -190,7 +190,7 @@ const PasswordPage = ({ id }: { id: string }): React.JSX.Element => {
 
       dispatch(setValidTrue(id));
       setErrorMessage(
-        "User account retrieved - please Save and Continue to complete your sign up"
+        "User account retrieved - please Login and Continue to complete your sign up"
       );
       const jsonUser = JSON.parse(JSON.stringify(response)).user;
       if (userEmail.toLowerCase() !== jsonUser.email) {
@@ -351,7 +351,9 @@ const PasswordPage = ({ id }: { id: string }): React.JSX.Element => {
           {/* Permanently show the error/success messages to give user consistent feedback */}
           <ValidationChecklist messageArray={messages} trigger={!userExists} />
 
-          <div className="solo-error-message">
+          <div
+            className={errorMessage !== "" ? "solo-error-message" : "offscreen"}
+          >
             <p ref={errorRef} aria-live="assertive">
               {errorMessage}
             </p>
