@@ -101,6 +101,15 @@ const PasswordPage = ({ id }: { id: string }): React.JSX.Element => {
     const numberTest = numberRegex.test(password);
     const pwdsMatchTest = password === passwordConfirm;
 
+    // User already exists and must have an uncompleted sign up
+    // (otherwise they would have been redirected to log in)
+    // Login user to validate password
+    if (userExists && minCharTest) {
+      testAgainstExistingPassword();
+      return;
+    }
+
+    // Test inputs
     if (
       specialCharTest &&
       minCharTest &&
@@ -162,16 +171,12 @@ const PasswordPage = ({ id }: { id: string }): React.JSX.Element => {
     dispatch(setConfirmPassword(passwordConfirmInputRef.current?.value ?? ""));
 
     // If user doesn't already exist - validate
-    if (!userExists) {
-      validatePassword();
-    } else {
-      // if (userId > -1 && isValid) {/
+    //if (!userExists) {
+    validatePassword();
+    // } else {
 
-      // User already exists and must have an uncompleted sign up
-      // (otherwise they would have been redirected to log in)
-      // Login user to validate password
-      testAgainstExistingPassword();
-    }
+    //   testAgainstExistingPassword();
+    // }
   };
 
   const testAgainstExistingPassword = async () => {
@@ -184,7 +189,9 @@ const PasswordPage = ({ id }: { id: string }): React.JSX.Element => {
       });
 
       dispatch(setValidTrue(id));
-      setErrorMessage("User account retrieved - please continue your sign up");
+      setErrorMessage(
+        "User account retrieved - please Save and Continue to complete your sign up"
+      );
       const jsonUser = JSON.parse(JSON.stringify(response)).user;
       if (userEmail.toLowerCase() !== jsonUser.email) {
         throw Error("Emails do not match");
