@@ -4,11 +4,15 @@ import Modal from "react-modal";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
 import { PageRouteArray, PageRoutes } from "../../router";
-import { getUserByEmail, postUser } from "../../services/users";
+import { getUserByEmail, postUser, updateUser } from "../../services/users";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { selectEmail, selectPassword } from "../../store/newUser/selectors";
 import { selectIsValid } from "../../store/signUpPages/selectors";
-import { selectUserId } from "../../store/user/selectors";
+import {
+  selectUserFirstName,
+  selectUserId,
+  selectUserLastName,
+} from "../../store/user/selectors";
 import { setSignUpComplete, setUserId } from "../../store/user/userSlice";
 import { NewUser } from "../../types/services";
 import BreadcrumbTrail from "../common/BreadcrumbTrail";
@@ -26,9 +30,13 @@ const SignUpPage = (): React.JSX.Element => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [errorMessage, setErrorMessage] = useState("");
+  const [userCreated, setUserCreated] = useState(false);
   const [success, setSuccess] = useState(false);
   const errorRef = useRef<HTMLParagraphElement>(null);
   const userId = useAppSelector(selectUserId);
+  const firstname: string = useAppSelector(selectUserFirstName);
+  const surname: string = useAppSelector(selectUserLastName);
+
   // Used to trigger the modal appearance if user needs to
   // complete the sign up procedure to continue.
   const [redirectModalIsOpen, setRedirectModalIsOpen] = useState(false);
@@ -101,6 +109,7 @@ const SignUpPage = (): React.JSX.Element => {
   };
 
   // Handle next button click for all sub pages
+  // TODO: split these into separate funcs.
   const onNext = async () => {
     setSuccess(false);
 
@@ -176,6 +185,7 @@ const SignUpPage = (): React.JSX.Element => {
 
         storeUserData(jsonUser);
         setSuccess(true);
+        setUserCreated(true);
       } catch (err) {
         setSuccess(false);
         errorRef.current?.focus();
@@ -198,8 +208,45 @@ const SignUpPage = (): React.JSX.Element => {
           setErrorMessage("Login failed - ");
         }
       }
+    } else {
+      setUserCreated(true);
+      setSuccess(true);
     }
-    // TODO: for later pages, update user in DB
+    // For later pages, update user in DB
+    if (pageRoute === PageRoutes.FullNamePage && pageIsValid) {
+      try {
+        const response = await updateUser(userId, {
+          firstName: firstname,
+          surname: surname,
+        });
+        const jsonUser = JSON.parse(JSON.stringify(response)).user;
+        console.log(
+          `SignUpPage onNext - jsonData = ${JSON.stringify(jsonUser)}`
+        );
+        setSuccess(true);
+      } catch (err) {
+        setSuccess(false);
+        errorRef.current?.focus();
+        console.log(`Error with updateUser call, success var = ${success}`);
+        if (axios.isAxiosError(err)) {
+          console.log(err.toJSON());
+          if (!err.response) {
+            setErrorMessage("User update failed - No server response");
+          } else if (err.response?.status === 400) {
+            setErrorMessage(`User update failed - ${err.message}`);
+          } else if (err.response?.status !== 201) {
+            setErrorMessage(
+              `Status not equal to 201. Status = ${err.response?.status}`
+            );
+          } else {
+            setErrorMessage("Update failed");
+          }
+        } else {
+          console.log(err);
+          setErrorMessage("Update failed - ");
+        }
+      }
+    }
 
     if (success) {
       navigate(PageRouteArray[pageNum + 1]);
@@ -230,7 +277,11 @@ const SignUpPage = (): React.JSX.Element => {
           {/* Display inner pages here */}
           <Outlet />
           {/* Error message output */}
-          <p ref={errorRef} className="error-messsage" aria-live="assertive">
+          <p
+            ref={errorRef}
+            className="solo-error-messsage"
+            aria-live="assertive"
+          >
             {errorMessage}
           </p>
         </div>
@@ -239,7 +290,7 @@ const SignUpPage = (): React.JSX.Element => {
           <button
             className="form-button h4-style"
             // Aria-disabled attribute not needed if disabled attribute included
-            disabled={pageNum === 0}
+            disabled={pageNum === 0 || userCreated}
             // No need to add Aria role of 'button' if button has type='button'
             type="button"
             onClick={onPrevious}
