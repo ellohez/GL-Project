@@ -204,7 +204,9 @@ const PasswordPage = ({ id }: { id: string }): React.JSX.Element => {
         if (!err.response) {
           setErrorMessage("Login failed - No server response");
         } else if (err.response?.status === 400) {
-          setErrorMessage(`Login failed - incorrect email or password`);
+          setErrorMessage(
+            `Login failed - incorrect email or password, please check and try again`
+          );
         } else if (err.response?.status !== 200) {
           setErrorMessage(
             `Status not equal to 200. Status = ${err.response?.status}`
@@ -349,13 +351,11 @@ const PasswordPage = ({ id }: { id: string }): React.JSX.Element => {
           {/* Permanently show the error/success messages to give user consistent feedback */}
           <ValidationChecklist messageArray={messages} trigger={!userExists} />
 
-          <p
-            ref={errorRef}
-            className={errorMessage ? "errmsg" : "offscreen"}
-            aria-live="assertive"
-          >
-            {errorMessage}
-          </p>
+          <div className="solo-error-message">
+            <p ref={errorRef} aria-live="assertive">
+              {errorMessage}
+            </p>
+          </div>
         </fieldset>
       </form>
     </section>
