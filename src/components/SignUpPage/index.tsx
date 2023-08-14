@@ -44,6 +44,7 @@ const SignUpPage = (): React.JSX.Element => {
     pageNum = 0;
   }
 
+  const [nextButtonText, setNextButtonText] = useState<string>("Next");
   // Store the current page by it's name - so we can control
   // the text on the 'Next' button and what happens when page is complete
   const pageRoute: string = PageRouteArray[pageNum];
@@ -58,7 +59,6 @@ const SignUpPage = (): React.JSX.Element => {
     password: useAppSelector(selectPassword),
   };
 
-  const [nextButtonText, setNextButtonText] = useState<string>("Next");
   // User can 'Save and Continue' once username and password complete
   // The last page should be 'Submit'
   useEffect(() => {
@@ -66,7 +66,7 @@ const SignUpPage = (): React.JSX.Element => {
     switch (pageRoute) {
       case PageRoutes.SignUpPage:
       case PageRoutes.UsernamePage:
-        setNextButtonText("Next");
+        setNextButtonText(userId < 0 ? "Next" : "Login and continue");
         break;
       case PageRoutes.PasswordPage:
         setNextButtonText("Save and Continue");
@@ -84,6 +84,7 @@ const SignUpPage = (): React.JSX.Element => {
     Modal.setAppElement("#root");
   });
 
+  // When Previous button is clicked, return 1 page.
   const onPrevious = () => {
     navigate(-1);
   };
