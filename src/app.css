@@ -150,7 +150,7 @@ button:focus {
 }
 
 button:disabled {
-  opacity: 0.92;
+  opacity: 0.85;
 }
 .modal {
   top: 30%;
