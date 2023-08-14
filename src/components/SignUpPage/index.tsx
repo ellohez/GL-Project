@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { MouseEventHandler, useEffect, useRef, useState } from "react";
 // import RedirectionModal from "../common/RedirectionModal";
 import Modal from "react-modal";
-import { Outlet, redirect, useLocation, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
 import { PageRouteArray, PageRoutes } from "../../router";
 import { getUserByEmail, postUser } from "../../services/users";
@@ -23,25 +23,10 @@ export const formTitles: Array<string> = [
   "Full Name",
 ];
 
-// TODO: Move this to a more central location
-export const customModalStyles = {
-  content: {
-    top: "50%",
-    left: "50%",
-    right: "auto",
-    bottom: "auto",
-    marginRight: "-50%",
-    transform: "translate(-50%, -50%)",
-    // backgroundColor: "var(--gray-shadow-rgba)",
-    display: "inline-grid",
-    columnCount: "2",
-    justifyItems: "center",
-    borderStyle: "solid",
-    borderColor: "var(--secondary-color)",
-  },
-};
-
 const SignUpPage = (): React.JSX.Element => {
+  // Before we draw any modals, bind the modal to the app (main)
+  // Modal.setAppElement('#main');
+
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [errorMessage, setErrorMessage] = useState("");
@@ -217,9 +202,10 @@ const SignUpPage = (): React.JSX.Element => {
     }
   };
 
+  // This modal is redirectional - as user has already completed their sign up
+  // we redirect them to log in instead.
   const closeTestModal: MouseEventHandler<HTMLButtonElement> = (e) => {
     setRedirectModalIsOpen(false);
-    // TODO: Would returning 'redirect' be better here??
     navigate(`/${PageRoutes.LogInPage}`);
   };
 
@@ -268,19 +254,20 @@ const SignUpPage = (): React.JSX.Element => {
       </main>
       <Modal
         isOpen={redirectModalIsOpen}
-        style={customModalStyles}
+        // style={customModalStyles}
         aria={{
           labelledby: "title",
           describedby: "modal-text",
         }}
         ariaHideApp={false}
+        className="modal"
         appElement={document.getElementById("app") || undefined}
       >
         <h5 className="title">Welcome Back</h5>
         <div className="separator"></div>
         <p className="modal-text">
-          "Looks like you are already fully signed up! We will direct you so you
-          can log in."
+          Looks like you are already fully signed up! We will direct you so you
+          can log in.
         </p>
         <button onClick={closeTestModal}>Take me there!</button>
       </Modal>

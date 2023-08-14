@@ -87,6 +87,18 @@ div.checkbox-combo {
   color: var(--primary-color);
   margin: 1em;
 }
+.modal {
+  top: 30%;
+  left: 30%;
+  padding: 1em;
+  position: absolute;
+  background-color: var(--primary-color);
+  display: inline-grid;
+  column-count: 2;
+  justify-items: center;
+  border-style: solid;
+  border-color: var(--secondary-color);
+}
 /* .success {
   color: #6fb66f;
 }
