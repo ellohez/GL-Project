@@ -63,9 +63,10 @@ div.checkbox-combo {
   margin-top: 1em;
   padding: 1em;
   border: 2px solid var(--gl-orange);
-  /* text-decoration: underline; */
-  /* text-decoration-color: var(--gl-orange); */
-  /* font-weight: bold; */
+}
+
+.offscreen {
+  display: none;
 }
 /* Moved to app.css */
 /* form {
