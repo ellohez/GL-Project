@@ -1,15 +1,22 @@
+import { isUndefined } from "lodash";
+import { useState } from "react";
+
 import { useAppSelector } from "../../store";
-import { selectUserFullname } from "../../store/user/selectors";
+import {
+  selectSignUpComplete,
+  selectUserFullname,
+} from "../../store/user/selectors";
 import LogInForm from "../LogInForm";
 
 const LogInPage = () => {
   const userName = useAppSelector(selectUserFullname);
+  const signUpComplete = useAppSelector(selectSignUpComplete);
 
   return (
     <main>
       <LogInForm />
 
-      <h1>Hello {userName ? userName : ""}</h1>
+      <h1>Hello{signUpComplete ? ` ${userName}` : ""}!</h1>
     </main>
   );
 };
