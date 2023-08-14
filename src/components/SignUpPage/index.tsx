@@ -73,6 +73,7 @@ const SignUpPage = (): React.JSX.Element => {
     setErrorMessage("");
     switch (pageRoute) {
       case PageRoutes.SignUpPage:
+        setNextButtonText("Next");
       case PageRoutes.UsernamePage:
         setNextButtonText(userId < 0 ? "Next" : "Log in and continue");
         break;
@@ -290,7 +291,7 @@ const SignUpPage = (): React.JSX.Element => {
           <button
             className="form-button h4-style"
             // Aria-disabled attribute not needed if disabled attribute included
-            disabled={pageNum === 0 || userCreated}
+            disabled={pageNum === 0 || pageNum === 3}
             // No need to add Aria role of 'button' if button has type='button'
             type="button"
             onClick={onPrevious}
