@@ -74,6 +74,7 @@ const SignUpPage = (): React.JSX.Element => {
     switch (pageRoute) {
       case PageRoutes.SignUpPage:
         setNextButtonText("Next");
+        break;
       case PageRoutes.UsernamePage:
         setNextButtonText(userId < 0 ? "Next" : "Log in and continue");
         break;
@@ -278,13 +279,11 @@ const SignUpPage = (): React.JSX.Element => {
           {/* Display inner pages here */}
           <Outlet />
           {/* Error message output */}
-          <p
-            ref={errorRef}
-            className="solo-error-messsage"
-            aria-live="assertive"
-          >
-            {errorMessage}
-          </p>
+          <div className="solo-error-message">
+            <p ref={errorRef} aria-live="assertive">
+              {errorMessage}
+            </p>
+          </div>
         </div>
         {/* Buttons are controlled here, rather than on the individual pages */}
         <div className="button-row">
