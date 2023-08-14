@@ -66,10 +66,12 @@ const SignUpPage = (): React.JSX.Element => {
     switch (pageRoute) {
       case PageRoutes.SignUpPage:
       case PageRoutes.UsernamePage:
-        setNextButtonText(userId < 0 ? "Next" : "Login and continue");
+        setNextButtonText(userId < 0 ? "Next" : "Log in and continue");
         break;
       case PageRoutes.PasswordPage:
-        setNextButtonText("Save and Continue");
+        setNextButtonText(
+          userId < 0 ? "Save and Continue" : "Log in and continue"
+        );
         break;
       case lastPage: // At present, this is - PageRoutes.FullNamePage:
         setNextButtonText("Submit");
@@ -77,7 +79,7 @@ const SignUpPage = (): React.JSX.Element => {
       default:
         setNextButtonText("Next");
     }
-  }, [pageRoute, lastPage]);
+  }, [pageRoute, lastPage, userId]);
 
   useEffect(() => {
     // Before we draw any modals, bind the modal to the app
