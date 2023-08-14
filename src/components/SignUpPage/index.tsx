@@ -24,9 +24,6 @@ export const formTitles: Array<string> = [
 ];
 
 const SignUpPage = (): React.JSX.Element => {
-  // Before we draw any modals, bind the modal to the app (main)
-  // Modal.setAppElement('#main');
-
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [errorMessage, setErrorMessage] = useState("");
@@ -254,13 +251,13 @@ const SignUpPage = (): React.JSX.Element => {
       </main>
       <Modal
         isOpen={redirectModalIsOpen}
-        // style={customModalStyles}
         aria={{
           labelledby: "title",
           describedby: "modal-text",
         }}
         ariaHideApp={false}
         className="modal"
+        // Before we draw any modals, bind the modal to the app
         appElement={document.getElementById("app") || undefined}
       >
         <h5 className="title">Welcome Back</h5>
