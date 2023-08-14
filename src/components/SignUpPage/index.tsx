@@ -72,13 +72,18 @@ const SignUpPage = (): React.JSX.Element => {
       case PageRoutes.PasswordPage:
         setNextButtonText("Save and Continue");
         break;
-      case lastPage: // PageRoutes.FullNamePage:
+      case lastPage: // At present, this is - PageRoutes.FullNamePage:
         setNextButtonText("Submit");
         break;
       default:
         setNextButtonText("Next");
     }
   }, [pageRoute, lastPage]);
+
+  useEffect(() => {
+    // Before we draw any modals, bind the modal to the app
+    Modal.setAppElement("#root");
+  });
 
   const onPrevious = () => {
     navigate(-1);
@@ -201,7 +206,7 @@ const SignUpPage = (): React.JSX.Element => {
 
   // This modal is redirectional - as user has already completed their sign up
   // we redirect them to log in instead.
-  const closeTestModal: MouseEventHandler<HTMLButtonElement> = (e) => {
+  const closeRedirectModal: MouseEventHandler<HTMLButtonElement> = (e) => {
     setRedirectModalIsOpen(false);
     navigate(`/${PageRoutes.LogInPage}`);
   };
@@ -255,18 +260,16 @@ const SignUpPage = (): React.JSX.Element => {
           labelledby: "title",
           describedby: "modal-text",
         }}
-        ariaHideApp={false}
+        ariaHideApp={true}
         className="modal"
-        // Before we draw any modals, bind the modal to the app
-        appElement={document.getElementById("app") || undefined}
       >
         <h5 className="title">Welcome Back</h5>
         <div className="separator"></div>
         <p className="modal-text">
-          Looks like you are already fully signed up! We will direct you so you
-          can log in.
+          It looks like you are already fully signed up! We will direct you so
+          you can log in.
         </p>
-        <button onClick={closeTestModal}>Take me there!</button>
+        <button onClick={closeRedirectModal}>Take me there!</button>
       </Modal>
     </React.Fragment>
   );
