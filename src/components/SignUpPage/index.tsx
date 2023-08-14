@@ -1,6 +1,5 @@
 import axios from "axios";
 import React, { MouseEventHandler, useEffect, useRef, useState } from "react";
-// import RedirectionModal from "../common/RedirectionModal";
 import Modal from "react-modal";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
@@ -262,6 +261,8 @@ const SignUpPage = (): React.JSX.Element => {
         }}
         ariaHideApp={true}
         className="modal"
+        // This doesn't work - set in useEffect
+        // appElement={document.getElementById("#root") || undefined}
       >
         <h5 className="title">Welcome Back</h5>
         <div className="separator"></div>
