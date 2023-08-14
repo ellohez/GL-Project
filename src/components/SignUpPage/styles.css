@@ -24,41 +24,12 @@ h4 {
   /* Add a top margin to h4s for the inner pages*/
   margin-top: 0.5em;
 }
-/* Moved to app.css */
-/* form {
-  background-color: var(--primary-color);
-  padding: 0.2em;
-} */
-/* .help-label {
-  display: block;
-  width: fit-content;
-  color: var(--secondary-color);
-  padding: 0.2em;
-  margin: 0.2em 0;
-  font-weight: 700;
-}
 
-*/
 div.separator {
   border-top: 0.1rem solid var(--secondary-color);
   margin: 1rem 0.3rem;
 }
 
-/* .block-input {
-  display: block;
-  padding: 0.5em;
-  margin: 0.4em 0.5em;
-  border-radius: 2px;
-  width: 50%;
-  transition: width 0.35s ease-in-out;
-  border-color: var(--secondary-color);
-}
-
-.block-input:focus {
-  border: 1.5px solid var(--secondary-color);
-  width: 60%;
-}
-*/
 .button-row {
   width: 100%;
   display: flex;
@@ -87,6 +58,47 @@ div.checkbox-combo {
   color: var(--primary-color);
   margin: 1em;
 }
+.modal {
+  top: 30%;
+  left: 30%;
+  padding: 1em;
+  position: absolute;
+  background-color: var(--primary-color);
+  display: inline-grid;
+  column-count: 2;
+  justify-items: center;
+  border-style: solid;
+  border-color: var(--secondary-color);
+}
+/* Moved to app.css */
+/* form {
+  background-color: var(--primary-color);
+  padding: 0.2em;
+} */
+/* .help-label {
+  display: block;
+  width: fit-content;
+  color: var(--secondary-color);
+  padding: 0.2em;
+  margin: 0.2em 0;
+  font-weight: 700;
+}
+
+.block-input {
+  display: block;
+  padding: 0.5em;
+  margin: 0.4em 0.5em;
+  border-radius: 2px;
+  width: 50%;
+  transition: width 0.35s ease-in-out;
+  border-color: var(--secondary-color);
+}
+
+.block-input:focus {
+  border: 1.5px solid var(--secondary-color);
+  width: 60%;
+}
+*/
 /* .success {
   color: #6fb66f;
 }

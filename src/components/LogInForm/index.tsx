@@ -1,5 +1,14 @@
 import axios from "axios";
-import { ChangeEventHandler, FormEventHandler, useRef, useState } from "react";
+import React, {
+  ChangeEventHandler,
+  FormEventHandler,
+  MouseEventHandler,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import Modal from "react-modal";
+import { useNavigate } from "react-router-dom";
 
 import { PageRoutes } from "../../router";
 import { loginUser } from "../../services/users";
@@ -10,20 +19,26 @@ import {
   setUserId,
   setUserLastName,
 } from "../../store/user/userSlice";
-import RedirectionModal from "../common/RedirectionModal";
 
 export const LogInForm = () => {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [errorMessage, setErrorMessage] = useState("");
   const errorRef = useRef<HTMLParagraphElement>(null);
+  const outerFormRef = useRef<HTMLDivElement>(null);
   // User entered form data
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
-  // Used to trigger the RedirectionalModal appearance if user needs to
+  // Used to trigger the Modal appearance if user needs to
   // complete the sign up procedure to continue.
-  const [redirect, setRedirect] = useState(false);
+  const [redirectModalIsOpen, setRedirectModalIsOpen] = useState(false);
+
+  useEffect(() => {
+    // Before we draw any modals, bind the modal to the app
+    Modal.setAppElement("#root");
+  });
 
   // For successful login - add user details to redux
   const storeUserDetails = (loginResult: string) => {
@@ -37,7 +52,7 @@ export const LogInForm = () => {
     dispatch(setSignUpComplete(fullUser.signUpComplete));
     // Redirect user to complete their signup if incomplete.
     if (fullUser.id > -1 && !fullUser.signUpComplete) {
-      setRedirect(true);
+      setRedirectModalIsOpen(true);
     }
     // If user has completed the sign up procedure, store their details
     dispatch(setUserFirstName(fullUser.firstName));
@@ -84,60 +99,78 @@ export const LogInForm = () => {
     }
   };
 
-  return (
-    <div className="outer-form">
-      <RedirectionModal
-        message={
-          "You have not completed your sign up, you will be redirected to do this."
-        }
-        redirectLink={`/${PageRoutes.SignUpPage}`}
-        trigger={redirect}
-      />
-      <form onSubmit={handleSubmit}>
-        {/* TODO: implement a show password checkbox */}
-        <fieldset>
-          <label className="help-label" htmlFor="email" id="emailLabel">
-            Your email:
-          </label>
-          <input
-            className="block-input"
-            id="email"
-            name="email"
-            type="email"
-            autoComplete="email"
-            aria-labelledby="emailLabel"
-            aria-required="true"
-            onInput={handleChange}
-            value={formData.email}
-            required
-          />
-          <label className="help-label" htmlFor="password" id="pwd-label">
-            Your password:
-          </label>
-          <input
-            className="block-input"
-            id="password"
-            name="password"
-            type="password"
-            autoComplete="password"
-            aria-labelledby="pwd-label"
-            aria-required="true"
-            onInput={handleChange}
-            value={formData.password}
-            required
-          />
-          <p
-            ref={errorRef}
-            className={errorMessage ? "errmsg" : "offscreen"}
-            aria-live="assertive"
-          >
-            {errorMessage}
-          </p>
-        </fieldset>
+  // This modal is redirectional - as user has already completed their sign up
+  // we redirect them to log in instead.
+  const closeRedirectModal: MouseEventHandler<HTMLButtonElement> = (e) => {
+    setRedirectModalIsOpen(false);
+    navigate(`/${PageRoutes.SignUpPage}`);
+  };
 
-        <button type="submit">SUBMIT</button>
-      </form>
-    </div>
+  return (
+    <React.Fragment>
+      <div className="outer-form" ref={outerFormRef}>
+        <form onSubmit={handleSubmit}>
+          {/* TODO: implement a show password checkbox */}
+          <fieldset>
+            <label className="help-label" htmlFor="email" id="emailLabel">
+              Your email:
+            </label>
+            <input
+              className="block-input"
+              id="email"
+              name="email"
+              type="email"
+              autoComplete="email"
+              aria-labelledby="emailLabel"
+              aria-required="true"
+              onInput={handleChange}
+              value={formData.email}
+              required
+            />
+            <label className="help-label" htmlFor="password" id="pwd-label">
+              Your password:
+            </label>
+            <input
+              className="block-input"
+              id="password"
+              name="password"
+              type="password"
+              autoComplete="password"
+              aria-labelledby="pwd-label"
+              aria-required="true"
+              onInput={handleChange}
+              value={formData.password}
+              required
+            />
+            <p
+              ref={errorRef}
+              className={errorMessage ? "errmsg" : "offscreen"}
+              aria-live="assertive"
+            >
+              {errorMessage}
+            </p>
+          </fieldset>
+          <button type="submit">SUBMIT</button>
+        </form>
+      </div>
+      <Modal
+        isOpen={redirectModalIsOpen}
+        aria={{
+          labelledby: "title",
+          describedby: "modal-text",
+        }}
+        ariaHideApp={true}
+        className="modal"
+        // appElement={document.getElementById("#root") || undefined}
+      >
+        <h5 className="title">More information needed</h5>
+        <p className="modal-text">
+          You have not completed your sign up, so we will redirect you to do
+          this.
+        </p>
+        <button onClick={closeRedirectModal}>Take me there!</button>
+      </Modal>
+    </React.Fragment>
   );
 };
 
