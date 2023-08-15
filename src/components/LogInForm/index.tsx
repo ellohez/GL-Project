@@ -67,9 +67,10 @@ export const LogInForm = () => {
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
 
+    // TODO: compare emails as lowercase
     try {
       const response = await loginUser({
-        email: formData.email.toLowerCase(),
+        email: formData.email,
         password: formData.password,
       });
       // console.log(response);
