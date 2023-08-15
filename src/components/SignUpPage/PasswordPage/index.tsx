@@ -170,13 +170,7 @@ const PasswordPage = ({ id }: { id: string }): React.JSX.Element => {
     dispatch(setPassword(passwordInputRef.current?.value ?? ""));
     dispatch(setConfirmPassword(passwordConfirmInputRef.current?.value ?? ""));
 
-    // If user doesn't already exist - validate
-    //if (!userExists) {
     validatePassword();
-    // } else {
-
-    //   testAgainstExistingPassword();
-    // }
   };
 
   const testAgainstExistingPassword = async () => {
@@ -303,9 +297,6 @@ const PasswordPage = ({ id }: { id: string }): React.JSX.Element => {
                   checked={confirmPwdIsVisible}
                   // aria-labelledby="pwdConfirmCheckboxLabel"
                   // aria-checked={confirmPwdIsVisible}
-                  // Confirm password not needed if user has a saved
-                  // but incomplete sign up
-                  // disabled={userId > -1}
                   onChange={() => {
                     setConfirmPwdIsVisible(
                       (confirmPwdIsVisible) => !confirmPwdIsVisible
