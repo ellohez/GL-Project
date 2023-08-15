@@ -31,6 +31,8 @@ export const LogInForm = () => {
     email: "",
     password: "",
   });
+  // Toggle password visibility
+  const [pwdIsVisible, setPwdIsVisible] = useState(false);
   // Used to trigger the Modal appearance if user needs to
   // complete the sign up procedure to continue.
   const [redirectModalIsOpen, setRedirectModalIsOpen] = useState(false);
@@ -130,14 +132,37 @@ export const LogInForm = () => {
               value={formData.email}
               required
             />
+
             <label className="help-label" htmlFor="password" id="pwd-label">
               Your password:
             </label>
+            {/* Toggle between password visibility */}
+            <div className="checkbox-combo" id="password-combo">
+              <input
+                id="pwdCheckbox"
+                name="pwdCheckbox"
+                type="checkbox"
+                checked={pwdIsVisible}
+                // aria-labelledby="pwdCheckboxLabel"
+                // aria-checked={pwdIsVisible}
+                onChange={() => {
+                  setPwdIsVisible((pwdIsVisible) => !pwdIsVisible);
+                }}
+              />
+              <label
+                className="checkbox-label"
+                htmlFor="pwdCheckbox"
+                id="pwdCheckboxLabel"
+              >
+                Show password?
+              </label>
+            </div>
+
             <input
               className="block-input"
               id="password"
               name="password"
-              type="password"
+              type={pwdIsVisible ? "text" : "password"}
               autoComplete="password"
               aria-labelledby="pwd-label"
               aria-required="true"
