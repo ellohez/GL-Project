@@ -1,0 +1,27 @@
+div.separator {
+  border-top: 0.1rem solid var(--gl-orange);
+  margin: 1rem 0.3rem;
+}
+
+article.news,
+.news {
+  margin: 2em;
+  padding: 2%;
+}
+
+article.news {
+  border: dotted var(--secondary-color);
+}
+
+.main-container {
+  padding: 1em;
+}
+
+.title {
+  margin-top: 2%;
+  margin-left: 2%;
+}
+
+img {
+  margin: 1em;
+}
