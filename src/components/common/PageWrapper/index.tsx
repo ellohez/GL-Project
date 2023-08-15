@@ -35,7 +35,7 @@ export default class PageWrapper extends React.Component<
           className="error-page"
           style={{ display: "flex", margin: "0 auto" }}
         >
-          <h1>Oops!</h1>
+          <h4>Oops!</h4>
           <p>Something went wrong.</p>
           <p>
             {/* Need to show error message here?  
