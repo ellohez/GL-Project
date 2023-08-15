@@ -94,7 +94,8 @@ const Header = () => {
         </svg>
       </div>
       <div className="a11y-btns">
-        <button className="align-right">Skip to main content</button>
+        {/* TODO: Skip to main content button */}
+        {/* <button className="align-right"><a href="#main" className="skip-link">Skip to main content</a></button> */}
         <button
           className="toggle-theme"
           name="toggle-theme"
