@@ -30,6 +30,11 @@ const newUserSlice = createSlice({
     resetConfirmPassword(state) {
       state.confirmPassword = "";
     },
+    resetAll(state) {
+      state.email = "";
+      state.password = "";
+      state.confirmPassword = "";
+    },
   },
 });
 
@@ -43,6 +48,7 @@ export const {
   resetPassword,
   setConfirmPassword,
   resetConfirmPassword,
+  resetAll,
 } = newUserSlice.actions;
 
 export default newUserSlice.reducer;

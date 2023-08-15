@@ -149,6 +149,9 @@ button:focus {
   border: 0.0625px solid var(--gl-orange);
 }
 
+button:disabled {
+  opacity: 0.85;
+}
 .modal {
   top: 30%;
   left: 30%;

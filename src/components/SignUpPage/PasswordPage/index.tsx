@@ -101,6 +101,15 @@ const PasswordPage = ({ id }: { id: string }): React.JSX.Element => {
     const numberTest = numberRegex.test(password);
     const pwdsMatchTest = password === passwordConfirm;
 
+    // User already exists and must have an uncompleted sign up
+    // (otherwise they would have been redirected to log in)
+    // Login user to validate password
+    if (userExists && minCharTest) {
+      testAgainstExistingPassword();
+      return;
+    }
+
+    // Test inputs
     if (
       specialCharTest &&
       minCharTest &&
@@ -161,17 +170,7 @@ const PasswordPage = ({ id }: { id: string }): React.JSX.Element => {
     dispatch(setPassword(passwordInputRef.current?.value ?? ""));
     dispatch(setConfirmPassword(passwordConfirmInputRef.current?.value ?? ""));
 
-    // If user doesn't already exist - validate
-    if (!userExists) {
-      validatePassword();
-    } else {
-      // if (userId > -1 && isValid) {/
-
-      // User already exists and must have an uncompleted sign up
-      // (otherwise they would have been redirected to log in)
-      // Login user to validate password
-      testAgainstExistingPassword();
-    }
+    validatePassword();
   };
 
   const testAgainstExistingPassword = async () => {
@@ -184,7 +183,9 @@ const PasswordPage = ({ id }: { id: string }): React.JSX.Element => {
       });
 
       dispatch(setValidTrue(id));
-      setErrorMessage("User account retrieved - please continue your sign up");
+      setErrorMessage(
+        "User account retrieved - please Login and Continue to complete your sign up"
+      );
       const jsonUser = JSON.parse(JSON.stringify(response)).user;
       if (userEmail.toLowerCase() !== jsonUser.email) {
         throw Error("Emails do not match");
@@ -197,7 +198,9 @@ const PasswordPage = ({ id }: { id: string }): React.JSX.Element => {
         if (!err.response) {
           setErrorMessage("Login failed - No server response");
         } else if (err.response?.status === 400) {
-          setErrorMessage(`Login failed - incorrect email or password`);
+          setErrorMessage(
+            `Login failed - incorrect email or password, please check and try again`
+          );
         } else if (err.response?.status !== 200) {
           setErrorMessage(
             `Status not equal to 200. Status = ${err.response?.status}`
@@ -294,9 +297,6 @@ const PasswordPage = ({ id }: { id: string }): React.JSX.Element => {
                   checked={confirmPwdIsVisible}
                   // aria-labelledby="pwdConfirmCheckboxLabel"
                   // aria-checked={confirmPwdIsVisible}
-                  // Confirm password not needed if user has a saved
-                  // but incomplete sign up
-                  // disabled={userId > -1}
                   onChange={() => {
                     setConfirmPwdIsVisible(
                       (confirmPwdIsVisible) => !confirmPwdIsVisible
@@ -342,13 +342,13 @@ const PasswordPage = ({ id }: { id: string }): React.JSX.Element => {
           {/* Permanently show the error/success messages to give user consistent feedback */}
           <ValidationChecklist messageArray={messages} trigger={!userExists} />
 
-          <p
-            ref={errorRef}
-            className={errorMessage ? "errmsg" : "offscreen"}
-            aria-live="assertive"
+          <div
+            className={errorMessage !== "" ? "solo-error-message" : "offscreen"}
           >
-            {errorMessage}
-          </p>
+            <p ref={errorRef} aria-live="assertive">
+              {errorMessage}
+            </p>
+          </div>
         </fieldset>
       </form>
     </section>
