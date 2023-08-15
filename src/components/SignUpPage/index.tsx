@@ -6,6 +6,7 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { PageRouteArray, PageRoutes } from "../../router";
 import { getUserByEmail, postUser, updateUser } from "../../services/users";
 import { useAppDispatch, useAppSelector } from "../../store";
+import { resetAll } from "../../store/newUser/newUserSlice";
 import { selectEmail, selectPassword } from "../../store/newUser/selectors";
 import { selectIsValid } from "../../store/signUpPages/selectors";
 import {
@@ -249,8 +250,16 @@ const SignUpPage = (): React.JSX.Element => {
       }
     }
 
-    if (success) {
-      navigate(PageRouteArray[pageNum + 1]);
+    // Clear up and navigate to next page.
+    if (success && pageRoute !== lastPage) {
+      if (pageRoute === PageRoutes.PasswordPage) {
+        // Clear email and password from redux before we navigate away
+        dispatch(resetAll());
+        // Navigate and replace password page with next one
+        navigate(PageRouteArray[pageNum + 1], { replace: true });
+      } else {
+        navigate(PageRouteArray[pageNum + 1]);
+      }
     }
   };
 
