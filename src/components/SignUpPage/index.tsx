@@ -175,7 +175,6 @@ const SignUpPage = (): React.JSX.Element => {
     if (pageRoute === PageRoutes.PasswordPage && pageIsValid && userId < 0) {
       try {
         const response = await postUser(newUser);
-        //savedUser.email = newUser.email;
         const jsonUser = JSON.parse(JSON.stringify(response)).user;
         console.log(
           `SignUpPage onNext - jsonData = ${JSON.stringify(jsonUser)}`
@@ -214,7 +213,7 @@ const SignUpPage = (): React.JSX.Element => {
       setUserCreated(true);
       setSuccess(true);
     }
-    // For later pages, update user in DB
+    // For later pages, user account will exist - update user in DB
     if (pageRoute === PageRoutes.FullNamePage && pageIsValid) {
       try {
         const response = await updateUser(userId, {
