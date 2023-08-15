@@ -153,10 +153,11 @@ button:disabled {
   opacity: 0.85;
 }
 .modal {
-  top: 30%;
-  left: 30%;
   padding: 1em;
   position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   background-color: var(--primary-color);
   display: inline-grid;
   column-count: 2;
