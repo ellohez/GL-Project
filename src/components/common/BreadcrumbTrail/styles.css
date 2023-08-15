@@ -37,3 +37,20 @@ div.divider {
 .breadcrumb p {
   padding: 0.01rem;
 }
+
+/* Reduce the breadcrumb trail to just the important crumbs */
+@media only screen and (max-width: 900px) {
+  #not-current,
+  div.divider {
+    display: none;
+  }
+
+  #current-step {
+    box-shadow: 0 0 0.05em 0 var(--orange-shadow-rgba);
+  }
+
+  #steps-remaining {
+    /* TODO: remove box shadow, or reduce? */
+    margin-left: 1em;
+  }
+}

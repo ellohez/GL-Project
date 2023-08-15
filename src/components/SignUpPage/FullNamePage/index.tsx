@@ -168,7 +168,6 @@ const FullNamePage = ({ id }: { id: string }): React.JSX.Element => {
             </label>
             <input
               className="block-input"
-              autoFocus
               type="text"
               id="family-name"
               ref={familyNameRef}

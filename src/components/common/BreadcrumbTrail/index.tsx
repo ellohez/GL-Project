@@ -19,6 +19,7 @@ const BreadcrumbTrail = ({
           // if last element - mark as current step for aria,
           // mark all others as false
           aria-current={i === currentStep ? "step" : "false"}
+          id={i === currentStep ? "current-step" : "not-current"}
         >
           <strong>Step {i + 1}</strong>
           <p>{formTitles[i]}</p>
@@ -34,7 +35,7 @@ const BreadcrumbTrail = ({
   }
 
   content.push(
-    <div key="stepsRemaining" className="crumb">
+    <div key="stepsRemaining" className="crumb" id="steps-remaining">
       <strong>Steps Remaining</strong>
       <p>{formTitles.length - currentStep - 1}</p>
     </div>
