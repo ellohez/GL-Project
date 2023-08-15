@@ -41,6 +41,13 @@ const SignUpPage = (): React.JSX.Element => {
   // Used to trigger the modal appearance if user needs to
   // complete the sign up procedure to continue.
   const [redirectModalIsOpen, setRedirectModalIsOpen] = useState(false);
+
+  const [infoModalIsOpen, setInfoModalIsOpen] = useState(false);
+  const [modalData, setModalData] = useState({
+    title: "",
+    message: "",
+    buttonText: "Ok",
+  });
   // Calculate the current page from the URL section
   const pathname = useLocation().pathname;
   const currentPath = pathname.replace("/sign-up/", "");
@@ -139,6 +146,11 @@ const SignUpPage = (): React.JSX.Element => {
             console.log(`User exists - emails match`);
             // If user has a complete sign up, redirect them to log in
             if (jsonUser.signUpComplete) {
+              setModalData({
+                title: "Welcome Back!",
+                message: `It looks like you are already fully signed up! We will direct you so you can log in.`,
+                buttonText: "Take Me There!",
+              });
               setRedirectModalIsOpen(true);
               return;
             }
@@ -181,9 +193,16 @@ const SignUpPage = (): React.JSX.Element => {
           `SignUpPage onNext - jsonData = ${JSON.stringify(jsonUser)}`
         );
         // TODO: improve this message:
-        alert(`Your details have been saved. 
-        You are free to either continue or return and complete at a later date. 
-        To continue at a later date, please revisit the sign up form and enter your email and password`);
+        setModalData({
+          title: "Your Details have been saved",
+          message: `You are now free to continue the sign up procedure or return at a later date to complete. 
+                    To continue at a later date, please revisit the sign up form and enter your email and password`,
+          buttonText: "Ok",
+        });
+        setInfoModalIsOpen(true);
+        // alert(`Your details have been saved.
+        // You are free to either continue or return and complete at a later date.
+        // To continue at a later date, please revisit the sign up form and enter your email and password`);
 
         storeUserData(jsonUser);
         setSuccess(true);
@@ -220,12 +239,15 @@ const SignUpPage = (): React.JSX.Element => {
         const response = await updateUser(userId, {
           firstName: firstname,
           surname: surname,
+          signUpComplete: true,
         });
         const jsonUser = JSON.parse(JSON.stringify(response)).user;
         console.log(
           `SignUpPage onNext - jsonData = ${JSON.stringify(jsonUser)}`
         );
         setSuccess(true);
+        // Update redux
+        dispatch(setSignUpComplete(true));
       } catch (err) {
         setSuccess(false);
         errorRef.current?.focus();
@@ -260,6 +282,14 @@ const SignUpPage = (): React.JSX.Element => {
       } else {
         navigate(PageRouteArray[pageNum + 1]);
       }
+    } else if (success && pageRoute === lastPage) {
+      // For last page - inform user they have completed the sign up!
+      setModalData({
+        title: "Sign up Complete",
+        message: `Thank you for signing up, your account is complete. We will now direct you to log in.`,
+        buttonText: "OK",
+      });
+      setRedirectModalIsOpen(true);
     }
   };
 
@@ -267,7 +297,15 @@ const SignUpPage = (): React.JSX.Element => {
   // we redirect them to log in instead.
   const closeRedirectModal: MouseEventHandler<HTMLButtonElement> = (e) => {
     setRedirectModalIsOpen(false);
+  };
+  // When the user closes the redirect modal (by any means) - redirect
+  const handleAfterCloseRedirectModal = () => {
     navigate(`/${PageRoutes.LogInPage}`);
+  };
+
+  // Close the information modal.
+  const closeInfoModal: MouseEventHandler<HTMLButtonElement> = (e) => {
+    setInfoModalIsOpen(false);
   };
 
   return (
@@ -317,6 +355,7 @@ const SignUpPage = (): React.JSX.Element => {
           </button>
         </div>
       </main>
+      {/* Modal to redirect user to log in, if they have already completed their sign up */}
       <Modal
         isOpen={redirectModalIsOpen}
         aria={{
@@ -325,16 +364,33 @@ const SignUpPage = (): React.JSX.Element => {
         }}
         ariaHideApp={true}
         className="modal"
+        contentLabel="title"
+        onAfterClose={handleAfterCloseRedirectModal}
         // This doesn't work - set in useEffect
         // appElement={document.getElementById("#root") || undefined}
       >
-        <h5 className="title">Welcome Back</h5>
+        <h5 className="title">{modalData.title}</h5>
         <div className="separator"></div>
-        <p className="modal-text">
-          It looks like you are already fully signed up! We will direct you so
-          you can log in.
-        </p>
-        <button onClick={closeRedirectModal}>Take me there!</button>
+        <p className="modal-text">{modalData.message}</p>
+        <button onClick={closeRedirectModal}>{modalData.buttonText}</button>
+      </Modal>
+      {/* Modal for displaying information to the user */}
+      <Modal
+        isOpen={infoModalIsOpen}
+        aria={{
+          labelledby: "title",
+          describedby: "modal-text",
+        }}
+        ariaHideApp={true}
+        className="modal"
+        // TODO: Currently not working - ??!
+        shouldCloseOnEsc={true}
+        shouldCloseOnOverlayClick={true}
+      >
+        <h5 className="title">{modalData.title}</h5>
+        <div className="separator"></div>
+        <p className="modal-text">{modalData.message}</p>
+        <button onClick={closeInfoModal}>{modalData.buttonText}</button>
       </Modal>
     </React.Fragment>
   );
