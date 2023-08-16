@@ -286,7 +286,7 @@ const SignUpPage = (): React.JSX.Element => {
       // For last page - inform user they have completed the sign up!
       setModalData({
         title: "Sign up Complete",
-        message: `Thank you for signing up, your account is complete. We will now direct you to log in.`,
+        message: `Thank you for signing up, your account is complete. We will now direct you to your account page.`,
         buttonText: "OK",
       });
       setRedirectModalIsOpen(true);
