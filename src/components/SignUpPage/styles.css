@@ -53,6 +53,15 @@ div.checkbox-combo {
   padding-left: 0.5em;
 }
 
+/* TODO: clear formatting here - so links are obvious? */
+a:link.terms {
+  color: var(--secondary-color);
+}
+
+/* All links appear as visited already? */
+a:visited.terms {
+  color: var(--secondary-color);
+}
 .required {
   background-color: var(--secondary-color);
   color: var(--primary-color);
@@ -65,6 +74,10 @@ div.checkbox-combo {
   border: 2px solid var(--gl-orange);
 }
 
+ul#instructions {
+  margin-left: 2%;
+  list-style-type: circle;
+}
 .offscreen {
   display: none;
 }

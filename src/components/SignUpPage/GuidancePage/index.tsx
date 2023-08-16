@@ -5,6 +5,7 @@ import {
   createPage,
   setValidTrue,
 } from "../../../store/signUpPages/signUpPagesSlice";
+import "../styles.css";
 
 const GuidancePage = ({ id }: { id: string }): React.JSX.Element => {
   // Currently no user input or validation here,
@@ -29,15 +30,32 @@ const GuidancePage = ({ id }: { id: string }): React.JSX.Element => {
       </div>
       {/* TODO: Include instructions for completing sign up - inc save option */}
       <h4>Instructions</h4>
-      <p id="instructions">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Et distinctio
-        at mollitia numquam provident aspernatur iure, necessitatibus officia a
-        voluptates ducimus. Officiis, velit vel? Dicta ipsum ipsam quisquam
-        consequuntur natus alias! Cum accusantium pariatur similique ab earum
-        vel! Sit, accusamus!
-      </p>
+      <ul id="instructions">
+        <li>Thank you for your interest in our services.</li>
+        <li>Our sign up process is split into small tasks.</li>
+        <li>
+          First, we will ask you to enter your email address and then choose a
+          password.
+        </li>
+        <li>
+          You will then have the option to save your progress and continue the
+          rest of the process at a later date.
+        </li>
+        <li>
+          This means that you do not have to complete all tasks in one sitting.
+        </li>
+        <li>You can do the other tasks in as many stages as you like.</li>
+      </ul>
       <h4>Terms and Conditions</h4>
-      <p id="terms_conditions">Terms and conditions to agree to here?</p>
+      <p id="terms_conditions">
+        By continuing with the sign up procedure, you are agreeing to our{" "}
+        <a
+          className="terms"
+          href="https://wordtickle.com/a-funny-story-about-terms-and-conditions/"
+        >
+          Terms and Conditions
+        </a>
+      </p>
       <br />
     </div>
   );
