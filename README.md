@@ -1,5 +1,6 @@
-
-# User Registration and Login page web pages that put the User First by focusing on accessibility, useability and responsiveness.
+# GL Project
+## Introduction
+** TLDR - User Registration and Login page web pages that put the User First by focusing on accessibility, useability and responsiveness.
  
 This user-centered project aims to reduce the cognitive load on the user by splitting the process into small manageable steps. This should help memory or cognition but also follows general UX guidance which states that this eases any user’s perception of how difficult a process is to complete.
 
@@ -8,12 +9,13 @@ This user-centered project aims to reduce the cognitive load on the user by spli
 As well as being the morally correct thing to do, prioritising website accessibility, can build customer trust and loyalty, failing to do so is essentially saying to customers with disabilities that their business is not welcome here!
 
 ### Table of Contents
-#### [Overall Project Design](https://github.com/ellohez/GL-Project#overall-project-design)
-#### [Details](https://github.com/ellohez/GL-Project#details)
-#### [Technologies Used](https://github.com/ellohez/GL-Project#technologies-used)
-#### [Web Fundamentals](https://github.com/ellohez/GL-Project#web-fundamentals)
-#### [Installation](https://github.com/ellohez/GL-Project#installation)
-#### [Future Work](https://github.com/ellohez/GL-Project#future-work)
+#### [Introduction](https://github.com/ellohez/GL-Project/main/README.md#introduction)
+#### [Overall Project Design](https://github.com/ellohez/GL-Project/main/README.md#overall-project-design-1)
+#### [Details](https://github.com/ellohez/GL-Project/main/README.md#details-1)
+#### [Technologies Used](https://github.com/ellohez/GL-Project/main/README.md#technologies-used-1)
+#### [Web Fundamentals](https://github.com/ellohez/GL-Project/main/README.md#web-fundamentals-1)
+#### [Installation](https://github.com/ellohez/GL-Project/main/README.md#installation-1)
+#### [Future Work](https://github.com/ellohez/GL-Project/main/README.md#future-work-1)
 
 ## Overall Project Design
 * Multi-step process, indicates steps completed and number steps to complete.
