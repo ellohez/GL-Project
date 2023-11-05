@@ -104,3 +104,4 @@ npm start
 
 - Refactor, split into smaller components 
 - Make more use of TypeScript
+- Remove branding
