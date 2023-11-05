@@ -7,12 +7,12 @@ This user-centered project aims to reduce the cognitive load on the user by spli
 As well as being the morally correct thing to do, prioritising website accessibility, can build customer trust and loyalty, failing to do so is essentially saying to customers with disabilities that their business is not welcome here!
 
 ### Table of Contents
-#### [Overall Project Design](https://github.com/ellohez/GL-Project#design)
+#### [Overall Project Design](https://github.com/ellohez/GL-Project#overall-project-design)
 #### [Details](https://github.com/ellohez/GL-Project#details)
-#### [Technologies Used](https://github.com/ellohez/GL-Project#technologies)
-#### [Web Fundamentals](https://github.com/ellohez/GL-Project#webfundamentals)
+#### [Technologies Used](https://github.com/ellohez/GL-Project#technologies-used)
+#### [Web Fundamentals](https://github.com/ellohez/GL-Project#web-fundamentals)
 #### [Installation](https://github.com/ellohez/GL-Project#installation)
-#### [Future Work](https://github.com/ellohez/GL-Project#future)
+#### [Future Work](https://github.com/ellohez/GL-Project#future-work)
 
 ## [Overall Project Design](https://github.com/ellohez/GL-Project#design)
 * Multi-step process, indicates steps completed and number steps to complete.
