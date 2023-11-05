@@ -1,3 +1,4 @@
+
 # User Registration and Login page web pages that put the User First by focusing on accessibility, useability and responsiveness.
  
 This user-centered project aims to reduce the cognitive load on the user by splitting the process into small manageable steps. This should help memory or cognition but also follows general UX guidance which states that this eases any user’s perception of how difficult a process is to complete.
@@ -14,7 +15,7 @@ As well as being the morally correct thing to do, prioritising website accessibi
 #### [Installation](https://github.com/ellohez/GL-Project#installation)
 #### [Future Work](https://github.com/ellohez/GL-Project#future-work)
 
-## [Overall Project Design](https://github.com/ellohez/GL-Project#design)
+## Overall Project Design
 * Multi-step process, indicates steps completed and number steps to complete.
 * Allows the user to save and complete the process at a later date.
 * Gives the user time to think, isn’t overwhelming and helps the user to pick up where they left off if distracted or forgetful.
@@ -22,7 +23,7 @@ As well as being the morally correct thing to do, prioritising website accessibi
 * Contrast - text and focused elements passes at least AA or AAA standard
 * Many users use browser settings to enlarge text - these pages allow this, rather than hinder it. (no fixed sizes)
 
-### [Details](https://github.com/ellohez/GL-Project#details)
+### Details
 * Keyboard navigation - for users who cannot use a mouse/trackball.
 * Contrast which meets at least WC3 WCAG 2.1 AA for text, graphical objects and user interface components.
 -- https://webaim.org/resources/contrastchecker/
@@ -35,7 +36,7 @@ As well as being the morally correct thing to do, prioritising website accessibi
 * Easily extendable, adding more pages to this framework is simple.
 * Alt-text where appropriate
 
-### [Technologies Used](https://github.com/ellohez/GL-Project#technologies)
+###  Technologies Used
 - Vite  
 - React
 -   Redux Toolkit
@@ -53,26 +54,25 @@ As well as being the morally correct thing to do, prioritising website accessibi
 -- Run Json-server using npx json-server -p PORTNUM - w data/db.json
 -- https://github.com/typicode/json-server
 
-## [Web Fundamentals](https://github.com/ellohez/GL-Project#webfundamentals)
+## Web Fundamentals
 
 -   Responsive styling
 -   CSS styling - without Tailwind etc.
 -   Semantic HTML
 -   Accessibility - Aims to comply to WC3 WCAG 2.1 level AA or above
 
-## [Installation](https://github.com/ellohez/GL-Project#installation)
+## Installation
 
-### [Prerequisites](https://github.com/ellohez/GL-Project#prerequisites)
+### Prerequisites
 
 -   Ensure you have installed latest versions of:
     -   Node.js (18.16.0 onwards)
     -   npm (9.5.1 onwards)
 
-### [Clone the repository](https://github.com/ellohez/GL-Project#clone-the-repository)
+### Clone the repository
 
 -   use git to clone this repo to your local environment
-#### [Install dependencies](https://github.com/ellohez/GL-Project#install-dependencies)
-
+#### Install dependencies
 ```
 npm install
 
@@ -98,9 +98,7 @@ Start the server
 npm start
 ```
 
-## [Future work](https://github.com/ellohez/GL-Project#future)
+## Future work
 
 - Refactor, split into smaller components 
 - Make more use of TypeScript
-
-
