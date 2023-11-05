@@ -10,12 +10,12 @@ As well as being the morally correct thing to do, prioritising website accessibi
 
 ### Table of Contents
 #### [Introduction](https://github.com/ellohez/GL-Project/blob/main/README.md#introduction)
-#### [Overall Project Design](https://github.com/ellohez/GL-Project/main/README.md#overall-project-design-1)
-#### [Details](https://github.com/ellohez/GL-Project/main/README.md#details-1)
-#### [Technologies Used](https://github.com/ellohez/GL-Project/main/README.md#technologies-used-1)
-#### [Web Fundamentals](https://github.com/ellohez/GL-Project/main/README.md#web-fundamentals-1)
-#### [Installation](https://github.com/ellohez/GL-Project/main/README.md#installation-1)
-#### [Future Work](https://github.com/ellohez/GL-Project/main/README.md#future-work-1)
+#### [Overall Project Design](https://github.com/ellohez/GL-Project/blob/main/README.md#overall-project-design-1)
+#### [Details](https://github.com/ellohez/GL-Project/blob/main/README.md#details-1)
+#### [Technologies Used](https://github.com/ellohez/GL-Project/blob/main/README.md#technologies-used-1)
+#### [Web Fundamentals](https://github.com/ellohez/GL-Project/blob/main/README.md#web-fundamentals-1)
+#### [Installation](https://github.com/ellohez/GL-Project/blob/main/README.md#installation-1)
+#### [Future Work](https://github.com/ellohez/GL-Project/blob/main/README.md#future-work-1)
 
 ## Overall Project Design
 * Multi-step process, indicates steps completed and number steps to complete.
