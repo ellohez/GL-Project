@@ -2,7 +2,7 @@
 ## Introduction
 ** TLDR - User Registration and Login page web pages that put the User First by focusing on accessibility, useability and responsiveness.
  
-This user-centered project aims to reduce the cognitive load on the user by splitting the process into small manageable steps. This should help memory or cognition but also follows general UX guidance which states that this eases any user’s perception of how difficult a process is to complete.
+This user-centered project aims to reduce the cognitive load on the user by splitting the process into small manageable steps. This should help users with memory or cognition difficulties but also follows general UX guidance which states that this eases any user’s perception of how difficult a process is to complete.
 
  These adaptations are driven by the Web Content Accessibility Guidelines (WCAG), which ask us to consider cognitive adaptations to help users with epilepsy, dyslexia, learning disability, autism and ADHD. The small manageable steps combined with the ability to save and continue the process at a later time, can also help users with memory loss. 
 
