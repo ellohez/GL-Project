@@ -97,7 +97,7 @@ npm run coverage
 Start the server
 
 ```
-npm start
+npm run dev
 ```
 
 ## Future work
