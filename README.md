@@ -2,7 +2,7 @@
 ## Introduction
 ** Key Takeaways - User Registration and Login page website that places the User at the centre by prioritising accessibility, useability and responsiveness.
  
-This user-centred project breaks down the registration process into smaller, more manageable steps to reduce congitive load. This can be particularly helpful for users with memory or cognition difficulties and is also a [recommended UX principle](https://growth.design/psychology#cognitive-load) as it eases the user’s perception of how difficult a process is to complete. 
+This user-centred project breaks down the registration process into smaller, more manageable steps to reduce cognitive load. This can be particularly helpful for users with memory or cognition difficulties and is also a [recommended UX principle](https://growth.design/psychology#cognitive-load) as it eases the user’s perception of how difficult a process is to complete. 
 
 Ensures accessibility by following [Web Content Accessibility Guidelines (WCAG)](https://www.w3.org/WAI/fundamentals/accessibility-principles/), which ask us to consider cognitive adaptations to help users with epilepsy, dyslexia, learning disability and neurodiversity. The small manageable steps combined with the ability to save and continue the process at a later time, can also help users with memory loss. 
 
