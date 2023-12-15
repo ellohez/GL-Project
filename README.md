@@ -1,12 +1,12 @@
 # GL Project
 ## Introduction
-** TLDR - User Registration and Login page web pages that put the User First by focusing on accessibility, useability and responsiveness.
+** Key Takeaways - User Registration and Login page website that places the User at the centre by prioritising accessibility, useability and responsiveness.
  
-This user-centred project aims to reduce the cognitive load on the user by splitting the process into small manageable steps. This should help users with memory or cognition difficulties but also follows general UX guidance which states that this eases any user’s perception of how difficult a process is to complete.
+This user-centred project breaks down the registration process into smaller, more manageable steps to reduce congitive load. This can be particularly helpful for users with memory or cognition difficulties and is also a [recommended UX principle](https://growth.design/psychology#cognitive-load) as it eases the user’s perception of how difficult a process is to complete. 
 
- These adaptations are driven by the Web Content Accessibility Guidelines (WCAG), which ask us to consider cognitive adaptations to help users with epilepsy, dyslexia, learning disability, autism and ADHD. The small manageable steps combined with the ability to save and continue the process at a later time, can also help users with memory loss. 
+Ensures accessibility by following Web Content Accessibility Guidelines (WCAG), which ask us to consider cognitive adaptations to help users with epilepsy, dyslexia, learning disability and neurodiversity. The small manageable steps combined with the ability to save and continue the process at a later time, can also help users with memory loss. 
 
-As well as being the morally correct thing to do, prioritising website accessibility, can build customer trust and loyalty, failing to do so is essentially saying to customers with disabilities that their business is not welcome here!
+Prioritising website accessibility is not only the right thing to do but it also builds customer trust and loyalty. By creating inclusive online experiences, businesses can better serve a wider range of customers and reap the benefits of a more engaged and satisfied customer base.
 
 ### Table of Contents
 #### [Introduction](https://github.com/ellohez/GL-Project/blob/main/README.md#introduction)
